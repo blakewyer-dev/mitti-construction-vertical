@@ -588,7 +588,7 @@ const PROJECTS = [
 ];
 
 // ── State ────────────────────────────────────────────────────
-let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', activeMarkup: null, activeTool: 'select', progStep: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {} };
+let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {} };
 const go      = (v) => { S = { ...S, view: v }; render(); };
 const setMode = (m) => {
   const defaultView = m === 'sc' ? 'home' : 'con-home';
@@ -2050,26 +2050,78 @@ function vConDrawings() {
   const proj = PROJECTS.find(p => p.id === S.project) || PROJECTS[0];
   const disciplines = [
     { name: 'ARCHITECTURAL', sheets: [
-      { num:'A-301', name:'Level 3 – Floor Plan',          rev:'Rev C', status:'Current',    uploaded:'8 May 2026' },
-      { num:'A-302', name:'Level 3 – Reflected Ceiling',   rev:'Rev B', status:'Current',    uploaded:'5 May 2026' },
-      { num:'A-303', name:'Level 3 – Fitout Details',      rev:'Rev A', status:'For Review', uploaded:'10 May 2026' },
+      { num:'A-301', name:'Level 3 – Floor Plan',          rev:'Rev C', status:'Current',    uploaded:'8 May 2026',  markups:2 },
+      { num:'A-302', name:'Level 3 – Reflected Ceiling',   rev:'Rev B', status:'Current',    uploaded:'5 May 2026',  markups:0 },
+      { num:'A-303', name:'Level 3 – Fitout Details',      rev:'Rev A', status:'For Review', uploaded:'10 May 2026', markups:1 },
     ]},
     { name: 'STRUCTURAL', sheets: [
-      { num:'S-001', name:'Footing Layout Plan',            rev:'Rev C', status:'Current',    uploaded:'8 May 2026' },
-      { num:'S-002', name:'Ground Floor Slab',              rev:'Rev C', status:'Current',    uploaded:'8 May 2026' },
-      { num:'S-003', name:'Column & Beam Schedule',         rev:'Rev B', status:'Current',    uploaded:'1 May 2026' },
-      { num:'S-004', name:'Tilt Panel Details',             rev:'Rev A', status:'For Review', uploaded:'10 May 2026' },
+      { num:'S-001', name:'Footing Layout Plan',            rev:'Rev C', status:'Current',    uploaded:'8 May 2026',  markups:0 },
+      { num:'S-002', name:'Ground Floor Slab',              rev:'Rev C', status:'Current',    uploaded:'8 May 2026',  markups:0 },
+      { num:'S-003', name:'Column & Beam Schedule',         rev:'Rev B', status:'Current',    uploaded:'1 May 2026',  markups:0 },
+      { num:'S-004', name:'Tilt Panel Details',             rev:'Rev A', status:'For Review', uploaded:'10 May 2026', markups:0 },
     ]},
     { name: 'CIVIL', sheets: [
-      { num:'C-001', name:'Site Layout & Setout',           rev:'Rev B', status:'Current',    uploaded:'12 May 2026' },
-      { num:'C-002', name:'Earthworks & Drainage Plan',     rev:'Rev B', status:'Current',    uploaded:'12 May 2026' },
-      { num:'C-003', name:'Road Pavement Details',          rev:'Rev A', status:'Superseded', uploaded:'2 Apr 2026' },
+      { num:'C-001', name:'Site Layout & Setout',           rev:'Rev B', status:'Current',    uploaded:'12 May 2026', markups:0 },
+      { num:'C-002', name:'Earthworks & Drainage Plan',     rev:'Rev B', status:'Current',    uploaded:'12 May 2026', markups:0 },
+      { num:'C-003', name:'Road Pavement Details',          rev:'Rev A', status:'Superseded', uploaded:'2 Apr 2026',  markups:0 },
     ]},
     { name: 'SERVICES', sheets: [
-      { num:'M-001', name:'Hydraulic Services Plan',        rev:'Rev A', status:'Current',    uploaded:'28 Apr 2026' },
-      { num:'E-001', name:'Electrical Layout',              rev:'Rev A', status:'Current',    uploaded:'28 Apr 2026' },
+      { num:'M-001', name:'Hydraulic Services Plan',        rev:'Rev A', status:'Current',    uploaded:'28 Apr 2026', markups:0 },
+      { num:'E-001', name:'Electrical Layout',              rev:'Rev A', status:'Current',    uploaded:'28 Apr 2026', markups:0 },
     ]},
   ];
+
+  let allSheets = [];
+  disciplines.forEach(d => d.sheets.forEach(s => allSheets.push({...s, discipline: d.name})));
+
+  // ── Register (landing) view ───────────────────────────────────────
+  if ((S.dwgView || 'register') === 'register') {
+    const stBadge = { Current:'bv', 'For Review':'ba', Superseded:'bg' };
+    const stCol   = { Current:'var(--green)', 'For Review':'#d97706', Superseded:'var(--text-4)' };
+    const totalMarkups = allSheets.reduce((s,sh) => s + (sh.markups||0), 0);
+    return `<div class="page"><div class="gen-page" style="max-width:1100px">
+      <div style="margin-bottom:20px">
+        <h1 class="page-t">Plans &amp; Drawings</h1>
+      </div>
+
+      <!-- Stats + actions row -->
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px;flex-wrap:wrap;gap:10px">
+        <div style="display:flex;align-items:center;gap:16px">
+          <span style="font-size:13px;color:var(--text-3)">${allSheets.length} sheets across ${disciplines.length} disciplines</span>
+          ${totalMarkups > 0 ? `<span style="font-size:12px;font-weight:600;color:#d97706;background:rgba(217,119,6,.1);padding:3px 10px;border-radius:10px">${totalMarkups} open markups</span>` : ''}
+        </div>
+        <div style="display:flex;gap:8px">
+          <button class="btn btn-o btn-sm">⇑ Upload Drawings</button>
+          <button class="btn btn-o btn-sm">▼ Filter</button>
+          <button class="btn btn-c btn-sm" data-dwg-view="viewer">Open Drawing Viewer →</button>
+        </div>
+      </div>
+
+      <!-- Table -->
+      <div style="background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+        <!-- Header -->
+        <div style="display:grid;grid-template-columns:110px 1fr 130px 90px 110px 90px 110px;padding:10px 18px;background:#f8f9fb;border-bottom:1.5px solid var(--border)">
+          ${['DRAWING NO.','TITLE','DISCIPLINE','REVISION','STATUS','MARKUPS','UPLOADED'].map(h =>
+            `<div style="font-size:10px;font-weight:700;color:var(--text-3);letter-spacing:.06em">${h}</div>`
+          ).join('')}
+        </div>
+        <!-- Rows -->
+        ${allSheets.map((s,i) => `
+        <div data-open-drawing="${i}" style="display:grid;grid-template-columns:110px 1fr 130px 90px 110px 90px 110px;padding:12px 18px;border-bottom:${i < allSheets.length-1 ? '1px solid var(--border)' : 'none'};cursor:pointer;transition:background .1s" onmouseover="this.style.background='#f8f9fb'" onmouseout="this.style.background='white'">
+          <div style="font-size:12px;font-weight:700;color:var(--text)">${s.num}</div>
+          <div style="font-size:12px;color:var(--text);font-weight:500;padding-right:12px">${s.name}</div>
+          <div><span style="font-size:10px;font-weight:600;color:var(--text-3);background:#f0f1f5;padding:2px 8px;border-radius:6px">${s.discipline}</span></div>
+          <div><span style="font-size:11px;font-weight:600;padding:2px 8px;border-radius:6px;background:${s.rev==='Rev C'?'rgba(101,89,255,.1)':s.rev==='Rev B'?'rgba(245,158,11,.1)':'#f0f1f5'};color:${s.rev==='Rev C'?'var(--purple)':s.rev==='Rev B'?'#d97706':'var(--text-3)'}">${s.rev}</span></div>
+          <div style="display:flex;align-items:center;gap:5px">
+            <span style="width:6px;height:6px;border-radius:50%;background:${stCol[s.status]};flex-shrink:0"></span>
+            <span style="font-size:11px;font-weight:600;color:${stCol[s.status]}">${s.status}</span>
+          </div>
+          <div>${s.markups > 0 ? `<span style="font-size:11px;font-weight:700;color:#d97706;background:rgba(217,119,6,.1);padding:2px 9px;border-radius:8px">${s.markups} open</span>` : `<span style="font-size:12px;color:var(--text-4)">—</span>`}</div>
+          <div style="font-size:11px;color:var(--text-3)">${s.uploaded}</div>
+        </div>`).join('')}
+      </div>
+    </div></div>`;
+  }
 
   const markups = [
     { type:'cloud',   color:'#f59e0b', label:'Cloud',          location:'Rooms 306–307', subject:'Waterproofing Defects',         comment:'Wet area waterproofing incomplete — both bathrooms on south wing need re-inspection before tiling proceeds.',  linked:'RFI #044',    layer:'Defects',      status:'Open',    author:'Tom R.',     time:'Today 9:12am' },
@@ -2078,8 +2130,6 @@ function vConDrawings() {
   ];
 
   const activeIdx = S.activeDrawing || 0;
-  let allSheets = [];
-  disciplines.forEach(d => d.sheets.forEach(s => allSheets.push({...s, discipline: d.name})));
   const active = allSheets[activeIdx] || allSheets[0];
   const stc = { Current:'bv', 'For Review':'ba', Superseded:'bg' };
   const tab = S.dwgTab || 'details';
@@ -3313,6 +3363,9 @@ function render() {
       if (v === 'con-programme') {
         S = { ...S, view: 'con-programme', progTopTab: 'schedule', progSubTab: 'master', progStep: null };
         render();
+      } else if (v === 'con-drawings') {
+        S = { ...S, view: 'con-drawings', dwgView: 'register' };
+        render();
       } else {
         go(v);
       }
@@ -3398,6 +3451,24 @@ function render() {
     el.addEventListener('click', e => {
       e.stopPropagation();
       S = { ...S, projectTab: el.dataset.projTab };
+      render();
+    })
+  );
+
+  // Drawing register row → open viewer at that sheet
+  document.querySelectorAll('[data-open-drawing]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, activeDrawing: parseInt(el.dataset.openDrawing), dwgView: 'viewer' };
+      render();
+    })
+  );
+
+  // Drawing view toggle (register / viewer)
+  document.querySelectorAll('[data-dwg-view]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, dwgView: el.dataset.dwgView };
       render();
     })
   );
