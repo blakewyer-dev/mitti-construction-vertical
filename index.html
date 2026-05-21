@@ -588,7 +588,7 @@ const PROJECTS = [
 ];
 
 // ── State ────────────────────────────────────────────────────
-let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showFeatureFlags: false, featureFlags: { procureproSchedule: false } };
+let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showFeatureFlags: false, showProcureProModal: false, featureFlags: { procureproSchedule: false } };
 const go      = (v) => { S = { ...S, view: v }; render(); };
 const setMode = (m) => {
   const defaultView = m === 'sc' ? 'home' : 'con-home';
@@ -2614,7 +2614,7 @@ function vConProgramme() {
               <div style="font-size:11px;color:var(--text-4);margin-bottom:24px">Export from ProcurePro: Tender → Documents → Export to PDF / Excel</div>
               <div style="display:flex;gap:8px;justify-content:center;flex-wrap:wrap">
                 <button class="btn btn-p" data-prog-step="analysing">Browse Files</button>
-                <button class="btn" style="background:#1d4ed8;border-color:#2563eb;color:white" data-prog-step="analysing">Use ProcurePro Sample →</button>
+                <button class="btn" style="background:#1d4ed8;border-color:#2563eb;color:white" data-prog-source="procurepro" data-prog-step="analysing">Use ProcurePro Sample →</button>
                 <button class="btn btn-o" data-prog-step="analysing">Use sample quote →</button>
               </div>
             </div>
@@ -2716,7 +2716,17 @@ function vConProgramme() {
     }
 
     if (step === 'analysing') {
-      const extracted = [
+      const isPP = S.progSource === 'procurepro';
+      const extracted = isPP ? [
+        { lbl:'Job type',        val:'Structural steel package — industrial' },
+        { lbl:'Client',          val:'BDW Constructions' },
+        { lbl:'Location',        val:'Henderson WA 6166' },
+        { lbl:'Contract value',  val:'$1,820,000 (ex GST)' },
+        { lbl:'Tender ref',      val:'PP-2026-0441' },
+        { lbl:'Est. duration',   val:'22 weeks' },
+        { lbl:'Project start',   val:'3 March 2026' },
+        { lbl:'Hold points',     val:'3 identified (structural + WHS)' },
+      ] : [
         { lbl:'Job type',        val:'Residential construction — 12 dwellings' },
         { lbl:'Client',          val:'Mirvac Group' },
         { lbl:'Location',        val:'North Perth WA 6006' },
@@ -2737,23 +2747,41 @@ function vConProgramme() {
         ${stepper(1)}
         <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;align-items:start">
           <div>
+            ${isPP ? `
+            <div style="background:#0B1F3A;border-radius:12px;padding:12px 16px;margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:12px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:32px;height:32px;border-radius:8px;background:linear-gradient(135deg,#1d4ed8,#3b82f6);display:flex;align-items:center;justify-content:center;font-size:14px;flex-shrink:0">&#x1F3D7;</div>
+                <div>
+                  <div style="font-size:10px;color:#93c5fd;font-weight:600;text-transform:uppercase;letter-spacing:.06em">Source document</div>
+                  <div style="font-size:12px;color:white;font-weight:700">ProcurePro — Tender PP-2026-0441</div>
+                </div>
+              </div>
+              <button id="pp-doc-btn" style="background:rgba(59,130,246,.2);border:1px solid rgba(59,130,246,.4);color:#93c5fd;border-radius:8px;padding:5px 12px;font-size:11px;font-weight:600;cursor:pointer;white-space:nowrap">View Document →</button>
+            </div>` : ''}
             <div class="card" style="margin-bottom:16px">
               <div style="padding:16px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:12px">
                 <div style="width:38px;height:38px;border-radius:10px;background:var(--purple-bg);display:flex;align-items:center;justify-content:center;font-size:18px">✦</div>
                 <div>
                   <div style="font-size:13px;font-weight:600;color:var(--text)">SC AI has read your document</div>
-                  <div style="font-size:11px;color:var(--green);margin-top:1px">✓ Analysis complete — 47 items extracted</div>
+                  <div style="font-size:11px;color:var(--green);margin-top:1px">${isPP ? '✓ Analysis complete — 62 items extracted' : '✓ Analysis complete — 47 items extracted'}</div>
                 </div>
               </div>
               <div style="padding:14px 16px">
-                ${[
+                ${(isPP ? [
+                  'Document parsed — ProcurePro_Tender_PP-2026-0441.pdf (1.8 MB)',
+                  '62 BOQ line items extracted across 6 trade sections',
+                  '6 construction phases identified',
+                  '3 WHS hold points added (structural inspections)',
+                  '1 weather buffer window applied (BOM Henderson data)',
+                  'Critical path calculated across 14 tasks',
+                ] : [
                   'Document parsed — North_Harbour_Quote_v3.pdf (2.4 MB)',
                   '48 trade line items extracted',
                   '9 construction phases identified',
                   '4 BCA hold points added',
                   '2 weather buffer windows applied (BOM Perth data)',
                   'Critical path calculated across 19 tasks',
-                ].map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12px">
+                ]).map(t => `<div style="display:flex;align-items:flex-start;gap:8px;margin-bottom:8px;font-size:12px">
                   <span style="font-weight:700;color:var(--green);flex-shrink:0">✓</span>
                   <span style="color:var(--text-2)">${t}</span>
                 </div>`).join('')}
@@ -3436,6 +3464,173 @@ function view() {
   }
 }
 
+// ── ProcurePro Document Modal ─────────────────────────────────
+function procureProModal() {
+  if (!S.showProcureProModal) return '';
+  const trades = [
+    { name: 'PRELIMINARIES', items: [
+      { desc: 'Site establishment & temporary facilities', qty: '1', unit: 'LS', rate: '$18,500', total: '$18,500' },
+      { desc: 'Traffic management plan & implementation', qty: '1', unit: 'LS', rate: '$4,200', total: '$4,200' },
+      { desc: 'Site safety setup (fencing, signage, PPE station)', qty: '1', unit: 'LS', rate: '$3,800', total: '$3,800' },
+      { desc: 'Project management & supervision (22 wks)', qty: '22', unit: 'WK', rate: '$3,200', total: '$70,400' },
+    ]},
+    { name: 'STRUCTURAL STEEL FABRICATION', items: [
+      { desc: 'Primary structural columns — 250UC89 (AS/NZS 3678)', qty: '42', unit: 'LM', rate: '$380', total: '$15,960' },
+      { desc: 'Primary beams — 310UB46 (AS/NZS 3678)', qty: '186', unit: 'LM', rate: '$290', total: '$53,940' },
+      { desc: 'Secondary beams & purlins — 150UC23', qty: '320', unit: 'LM', rate: '$195', total: '$62,400' },
+      { desc: 'Bracing & knee braces — RHS 150x100x6', qty: '88', unit: 'LM', rate: '$245', total: '$21,560' },
+      { desc: 'Base plates, cap plates & cleats — fabricated', qty: '1', unit: 'LS', rate: '$28,400', total: '$28,400' },
+      { desc: 'Shop primer coating (2 coats Dulux Zincanode)', qty: '1', unit: 'LS', rate: '$12,600', total: '$12,600' },
+    ]},
+    { name: 'STRUCTURAL STEEL ERECTION', items: [
+      { desc: 'Crane hire — 100T franna (mobilisation + 14 days)', qty: '1', unit: 'LS', rate: '$68,000', total: '$68,000' },
+      { desc: 'Steel erection crew (4 riggers + dogman, 14 days)', qty: '14', unit: 'DAY', rate: '$8,400', total: '$117,600' },
+      { desc: 'High-tensile bolting & torque verification', qty: '1', unit: 'LS', rate: '$9,800', total: '$9,800' },
+      { desc: 'Post-erection survey & certification (RPEQ)', qty: '1', unit: 'LS', rate: '$4,500', total: '$4,500' },
+    ]},
+    { name: 'CONCRETE WORKS', items: [
+      { desc: 'Concrete pad footings — 900x900x600 (32MPa)', qty: '42', unit: 'EA', rate: '$1,850', total: '$77,700' },
+      { desc: 'Ground floor slab — 150mm thk 32MPa + SL82 mesh', qty: '2,840', unit: 'M2', rate: '$88', total: '$249,920' },
+      { desc: 'Formwork & falsework to slabs', qty: '2,840', unit: 'M2', rate: '$28', total: '$79,520' },
+      { desc: 'Concrete pump hire', qty: '6', unit: 'DAY', rate: '$2,200', total: '$13,200' },
+    ]},
+    { name: 'HOLD-DOWN & ANCHOR BOLTS', items: [
+      { desc: 'M24 HD bolts — cast-in to footings (sets of 4)', qty: '42', unit: 'SET', rate: '$185', total: '$7,770' },
+      { desc: 'Chemical anchors — M20 HIT-RE 500 V4', qty: '180', unit: 'EA', rate: '$48', total: '$8,640' },
+    ]},
+    { name: 'MISCELLANEOUS METAL', items: [
+      { desc: 'Roof framing — Z/C purlins & girts', qty: '1', unit: 'LS', rate: '$42,800', total: '$42,800' },
+      { desc: 'Access stairs & walkways — hot-dip galvanised', qty: '1', unit: 'LS', rate: '$38,500', total: '$38,500' },
+      { desc: 'Handrails & balustrades to walkways', qty: '64', unit: 'LM', rate: '$380', total: '$24,320' },
+      { desc: 'Final site clean & waste removal', qty: '1', unit: 'LS', rate: '$4,800', total: '$4,800' },
+    ]},
+  ];
+  const subtotal = '$1,654,110';
+  const gst = '$165,411';
+  const total = '$1,819,521';
+
+  return `
+  <!-- Backdrop -->
+  <div id="pp-modal-backdrop" style="position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:10000;display:flex;align-items:flex-start;justify-content:center;padding:24px;overflow-y:auto">
+    <div style="background:white;border-radius:16px;width:100%;max-width:900px;overflow:hidden;box-shadow:0 24px 80px rgba(0,0,0,.3)">
+
+      <!-- Document header -->
+      <div style="background:#0B1F3A;padding:20px 28px">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+          <!-- ProcurePro logo -->
+          <div style="display:flex;align-items:center;gap:10px">
+            <svg width="28" height="28" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M4 8 L16 4 L28 8 L28 20 L16 28 L4 20 Z" fill="#2563EB" opacity="0.15"/>
+              <path d="M6 16 L14 10 L14 22 Z" fill="#2563EB"/>
+              <path d="M16 16 L24 10 L24 22 Z" fill="#3b82f6"/>
+            </svg>
+            <div>
+              <span style="font-size:18px;font-weight:400;color:white;letter-spacing:-.2px">Procure</span><span style="font-size:18px;font-weight:800;color:white">Pro</span>
+            </div>
+            <div style="width:1px;height:20px;background:rgba(255,255,255,.2);margin:0 4px"></div>
+            <span style="font-size:11px;color:rgba(255,255,255,.5);font-weight:500">Tender Submission</span>
+          </div>
+          <button id="pp-modal-close" style="background:rgba(255,255,255,.1);border:none;color:white;border-radius:8px;width:32px;height:32px;font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center">✕</button>
+        </div>
+        <!-- Project info grid -->
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+          ${[
+            { lbl:'Tender Reference', val:'PP-2026-0441' },
+            { lbl:'Project', val:'Civmec Structural Package' },
+            { lbl:'Client', val:'BDW Constructions' },
+            { lbl:'Location', val:'Henderson WA 6166' },
+            { lbl:'Submitted by', val:'Civmec Ltd' },
+            { lbl:'Submission date', val:'18 Feb 2026' },
+            { lbl:'Tender validity', val:'60 days' },
+            { lbl:'Contract type', val:'Lump Sum' },
+          ].map(f => `<div>
+            <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:3px">${f.lbl}</div>
+            <div style="font-size:12px;font-weight:600;color:white">${f.val}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Scope summary bar -->
+      <div style="background:#f0f6ff;border-bottom:1px solid #dbeafe;padding:12px 28px;display:flex;align-items:center;gap:24px">
+        ${[
+          { lbl:'Trade sections', val:'6' },
+          { lbl:'BOQ line items', val:'62' },
+          { lbl:'Est. programme', val:'22 weeks' },
+          { lbl:'Contract value (ex GST)', val:subtotal, highlight:true },
+        ].map(s => `<div>
+          <div style="font-size:10px;color:#6b7280;font-weight:600;text-transform:uppercase;letter-spacing:.06em">${s.lbl}</div>
+          <div style="font-size:${s.highlight?'15':'13'}px;font-weight:${s.highlight?'800':'700'};color:${s.highlight?'#1d4ed8':'#111827'}">${s.val}</div>
+        </div>`).join('')}
+      </div>
+
+      <!-- BOQ table -->
+      <div style="padding:20px 28px;max-height:480px;overflow-y:auto">
+        ${trades.map(trade => `
+        <div style="margin-bottom:20px">
+          <div style="background:#1e3a5f;color:white;padding:8px 14px;border-radius:8px 8px 0 0;font-size:10px;font-weight:800;letter-spacing:.07em;text-transform:uppercase">${trade.name}</div>
+          <table style="width:100%;border-collapse:collapse;border:1px solid #e5e7eb;border-top:none">
+            <thead>
+              <tr style="background:#f9fafb">
+                <th style="text-align:left;padding:7px 12px;font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb;width:45%">Description</th>
+                <th style="text-align:right;padding:7px 12px;font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb">Qty</th>
+                <th style="text-align:left;padding:7px 12px;font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb">Unit</th>
+                <th style="text-align:right;padding:7px 12px;font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb">Rate</th>
+                <th style="text-align:right;padding:7px 12px;font-size:9px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid #e5e7eb">Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              ${trade.items.map((item,i) => `<tr style="background:${i%2===0?'white':'#fafafa'}">
+                <td style="padding:8px 12px;font-size:11px;color:#374151;border-bottom:1px solid #f3f4f6">${item.desc}</td>
+                <td style="padding:8px 12px;font-size:11px;color:#374151;text-align:right;border-bottom:1px solid #f3f4f6">${item.qty}</td>
+                <td style="padding:8px 12px;font-size:11px;color:#6b7280;border-bottom:1px solid #f3f4f6">${item.unit}</td>
+                <td style="padding:8px 12px;font-size:11px;color:#374151;text-align:right;border-bottom:1px solid #f3f4f6">${item.rate}</td>
+                <td style="padding:8px 12px;font-size:11px;font-weight:600;color:#111827;text-align:right;border-bottom:1px solid #f3f4f6">${item.total}</td>
+              </tr>`).join('')}
+            </tbody>
+          </table>
+        </div>`).join('')}
+
+        <!-- Exclusions -->
+        <div style="background:#fff7ed;border:1px solid #fed7aa;border-radius:10px;padding:14px 18px;margin-bottom:20px">
+          <div style="font-size:11px;font-weight:700;color:#c2410c;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Exclusions</div>
+          ${[
+            'Supply & installation of roofing and wall cladding',
+            'Mechanical, electrical & plumbing services',
+            'Fire protection systems',
+            'External works and landscaping',
+            'Permits, council fees & engineer certification (RPEQ fees excluded, allow separately)',
+          ].map(e => `<div style="display:flex;align-items:flex-start;gap:7px;margin-bottom:5px;font-size:11px;color:#7c2d12">
+            <span style="flex-shrink:0;color:#ea580c;font-weight:700">✕</span>${e}
+          </div>`).join('')}
+        </div>
+
+        <!-- Pricing summary -->
+        <div style="background:#f8fafc;border:1.5px solid #e2e8f0;border-radius:10px;padding:16px 20px">
+          <div style="font-size:11px;font-weight:700;color:#475569;text-transform:uppercase;letter-spacing:.06em;margin-bottom:12px">Pricing Summary</div>
+          ${[
+            { lbl:'Subtotal (ex GST)', val:subtotal, bold:false },
+            { lbl:'GST (10%)', val:gst, bold:false },
+            { lbl:'Total Contract Value (inc GST)', val:total, bold:true, highlight:true },
+          ].map(r => `<div style="display:flex;align-items:center;justify-content:space-between;padding:7px 0;${r.bold?'border-top:1.5px solid #e2e8f0;margin-top:4px':''}">
+            <span style="font-size:${r.bold?'13':'12'}px;font-weight:${r.bold?'700':'500'};color:${r.highlight?'#1d4ed8':'#374151'}">${r.lbl}</span>
+            <span style="font-size:${r.bold?'16':'12'}px;font-weight:${r.bold?'800':'600'};color:${r.highlight?'#1d4ed8':'#374151'}">${r.val}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      <!-- Footer actions -->
+      <div style="padding:14px 28px;border-top:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between;background:#f9fafb">
+        <div style="font-size:11px;color:#9ca3af">ProcurePro · Tender PP-2026-0441 · Submitted 18 Feb 2026 · Valid until 19 Apr 2026</div>
+        <div style="display:flex;gap:8px">
+          <button id="pp-modal-close" style="background:white;border:1.5px solid #e5e7eb;color:#374151;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer">Close</button>
+          <button style="background:#1d4ed8;border:none;color:white;border-radius:8px;padding:7px 16px;font-size:12px;font-weight:600;cursor:pointer">↓ Export PDF</button>
+        </div>
+      </div>
+
+    </div>
+  </div>`;
+}
+
 // ── Feature Flags Panel ──────────────────────────────────────
 const FEATURE_FLAGS = [
   {
@@ -3502,7 +3697,8 @@ function render() {
         ${view()}
       </div>
     </div>
-    ${featureFlagsPanel()}`;
+    ${featureFlagsPanel()}
+    ${procureProModal()}`;
 
   // Nav clicks (sidebar + generic [data-view] except back-button which has data-exit-project)
   document.querySelectorAll('[data-view]:not([data-exit-project])').forEach(el =>
@@ -3729,7 +3925,8 @@ function render() {
   document.querySelectorAll('[data-prog-step]').forEach(el =>
     el.addEventListener('click', e => {
       e.stopPropagation();
-      S = { ...S, view: 'con-programme', progTopTab: 'schedule', progSubTab: 'ai-builder', progStep: el.dataset.progStep || null };
+      const src = el.dataset.progSource || null;
+      S = { ...S, view: 'con-programme', progTopTab: 'schedule', progSubTab: 'ai-builder', progStep: el.dataset.progStep || null, progSource: src !== null ? src : S.progSource };
       render();
     })
   );
@@ -3742,6 +3939,23 @@ function render() {
       render();
     })
   );
+
+  // ProcurePro document modal
+  document.getElementById('pp-doc-btn')?.addEventListener('click', e => {
+    e.stopPropagation();
+    S = { ...S, showProcureProModal: true };
+    render();
+  });
+  document.querySelectorAll('#pp-modal-close').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, showProcureProModal: false };
+      render();
+    })
+  );
+  document.getElementById('pp-modal-backdrop')?.addEventListener('click', e => {
+    if (e.target === e.currentTarget) { S = { ...S, showProcureProModal: false }; render(); }
+  });
 
   // Feature flags panel toggle
   document.getElementById('ff-toggle')?.addEventListener('click', e => {
