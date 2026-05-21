@@ -588,7 +588,16 @@ const PROJECTS = [
 ];
 
 // ── State ────────────────────────────────────────────────────
-let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showFeatureFlags: false, showProcureProModal: false, featureFlags: { procureproSchedule: false } };
+let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showDemoPanel: false, showProcureProModal: false, phase: 1, featureFlags: { procureproSchedule: false } };
+
+// Set phase and auto-apply feature flags
+function setPhase(n) {
+  const flags = {
+    procureproSchedule: n >= 2,
+  };
+  S = { ...S, phase: n, featureFlags: flags };
+  render();
+}
 const go      = (v) => { S = { ...S, view: v }; render(); };
 const setMode = (m) => {
   const defaultView = m === 'sc' ? 'home' : 'con-home';
@@ -3631,57 +3640,84 @@ function procureProModal() {
   </div>`;
 }
 
-// ── Feature Flags Panel ──────────────────────────────────────
-const FEATURE_FLAGS = [
+// ── Demo Controls Panel ───────────────────────────────────────
+const PHASES = [
   {
-    id: 'procureproSchedule',
-    name: 'ProcurePro Schedule Input',
-    desc: 'Import a quote or tender submitted through ProcurePro as the starting point for AI schedule creation.',
-    badge: 'Integration',
-    badgeCol: '#0ea5e9',
+    n: 1,
+    name: 'Phase 1',
+    sub: 'Core Construct',
+    desc: 'Foundation modules — Jobs & Projects, Plans & Drawings, Programme (Schedule, AI Builder, Intelligence, History).',
+    features: ['Jobs & Projects (grid + hierarchy)', 'Plans & Drawings register + viewer', 'Programme — Schedule, Gantt, AI Builder', 'Intelligence, History, Audit, Changes tabs'],
+    col: '#6559FF',
+  },
+  {
+    n: 2,
+    name: 'Phase 2',
+    sub: 'Integrations & AI',
+    desc: 'Everything in Phase 1, plus third-party integrations and enhanced AI capabilities.',
+    features: ['ProcurePro Schedule Input integration', 'Import tender/quote from ProcurePro', 'Use ProcurePro sample document', 'AI programme creation from BOQ'],
+    col: '#0ea5e9',
+    comingSoon: false,
+  },
+  {
+    n: 3,
+    name: 'Phase 3',
+    sub: 'Advanced Intelligence',
+    desc: 'Everything in Phase 2, plus advanced analytics, cross-project intelligence, and live integrations.',
+    features: ['Cross-project scheduling AI', 'Live supplier & subcontractor data', 'Predictive delay modelling', 'Full ERP & accounting integration'],
+    col: '#10b981',
+    comingSoon: true,
   },
 ];
 
-function featureFlagsPanel() {
-  if (!S.showFeatureFlags) {
-    return `<button id="ff-toggle" style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#1F2533;color:white;border:none;border-radius:12px;padding:9px 16px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:7px;box-shadow:0 4px 16px rgba(0,0,0,.25)">
-      🚩 <span>Feature Flags</span>
-      ${Object.values(S.featureFlags).some(Boolean) ? `<span style="width:7px;height:7px;border-radius:50%;background:#6559FF;flex-shrink:0"></span>` : ''}
+function demoControlsPanel() {
+  if (!S.showDemoPanel) {
+    return `<button id="demo-toggle" style="position:fixed;bottom:24px;right:24px;z-index:9999;background:#1F2533;color:white;border:none;border-radius:12px;padding:9px 16px;font-size:12px;font-weight:600;cursor:pointer;display:flex;align-items:center;gap:8px;box-shadow:0 4px 16px rgba(0,0,0,.25)">
+      <span style="font-size:10px;font-weight:800;background:${PHASES[S.phase-1].col};color:white;padding:2px 7px;border-radius:6px;letter-spacing:.03em">P${S.phase}</span>
+      <span>Demo Controls</span>
     </button>`;
   }
+
   return `
-  <div style="position:fixed;bottom:24px;right:24px;z-index:9999;width:340px;background:white;border:1.5px solid var(--border);border-radius:16px;box-shadow:0 12px 40px rgba(0,0,0,.15);overflow:hidden">
+  <div style="position:fixed;bottom:24px;right:24px;z-index:9999;width:360px;background:white;border:1.5px solid var(--border);border-radius:16px;box-shadow:0 16px 48px rgba(0,0,0,.18);overflow:hidden">
     <!-- Header -->
     <div style="background:#1F2533;padding:14px 18px;display:flex;align-items:center;justify-content:space-between">
       <div style="display:flex;align-items:center;gap:8px">
-        <span style="font-size:14px">🚩</span>
-        <span style="font-size:13px;font-weight:700;color:white">Feature Flags</span>
-        <span style="font-size:10px;background:rgba(101,89,255,.4);color:#a5b4fc;padding:1px 7px;border-radius:8px;font-weight:600">PROTOTYPE</span>
+        <span style="font-size:13px;font-weight:700;color:white">Demo Controls</span>
+        <span style="font-size:10px;background:rgba(101,89,255,.35);color:#a5b4fc;padding:1px 7px;border-radius:8px;font-weight:700">PROTOTYPE</span>
       </div>
-      <button id="ff-toggle" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;line-height:1;padding:0">✕</button>
+      <button id="demo-toggle" style="background:none;border:none;color:rgba(255,255,255,.5);font-size:16px;cursor:pointer;line-height:1;padding:0">✕</button>
     </div>
-    <!-- Flags list -->
-    <div style="padding:12px 14px;display:flex;flex-direction:column;gap:10px">
-      ${FEATURE_FLAGS.map(f => `
-      <div style="background:#f8f9fb;border:1.5px solid ${S.featureFlags[f.id] ? 'rgba(101,89,255,.25)' : 'var(--border)'};border-radius:12px;padding:12px 14px;transition:border-color .2s">
-        <div style="display:flex;align-items:flex-start;justify-content:space-between;gap:10px">
-          <div style="flex:1;min-width:0">
-            <div style="display:flex;align-items:center;gap:7px;margin-bottom:4px;flex-wrap:wrap">
-              <span style="font-size:12px;font-weight:700;color:var(--text)">${f.name}</span>
-              <span style="font-size:9px;font-weight:700;background:${f.badgeCol}20;color:${f.badgeCol};padding:1px 6px;border-radius:6px">${f.badge}</span>
+
+    <!-- Phase selector -->
+    <div style="padding:14px 14px 0">
+      <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">Select Phase</div>
+      <div style="display:flex;flex-direction:column;gap:8px">
+        ${PHASES.map(p => `
+        <div data-set-phase="${p.n}" style="border:2px solid ${S.phase===p.n ? p.col : 'var(--border)'};border-radius:12px;padding:11px 14px;cursor:${p.comingSoon ? 'default' : 'pointer'};background:${S.phase===p.n ? p.col+'10' : 'white'};opacity:${p.comingSoon ? '.5' : '1'};transition:border-color .15s">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:4px">
+            <div style="display:flex;align-items:center;gap:8px">
+              <span style="font-size:11px;font-weight:800;background:${S.phase===p.n ? p.col : '#f3f4f6'};color:${S.phase===p.n ? 'white' : 'var(--text-3)'};padding:2px 8px;border-radius:6px">${p.name}</span>
+              <span style="font-size:12px;font-weight:700;color:${S.phase===p.n ? p.col : 'var(--text)'}">${p.sub}</span>
             </div>
-            <p style="font-size:11px;color:var(--text-3);margin:0;line-height:1.5">${f.desc}</p>
+            ${S.phase===p.n ? `<span style="font-size:9px;font-weight:700;color:${p.col}">● ACTIVE</span>` : p.comingSoon ? `<span style="font-size:9px;font-weight:600;color:var(--text-4)">COMING SOON</span>` : ''}
           </div>
-          <!-- Toggle switch -->
-          <div data-ff-toggle="${f.id}" style="flex-shrink:0;width:40px;height:22px;border-radius:11px;background:${S.featureFlags[f.id] ? 'var(--purple)' : '#d1d5db'};cursor:pointer;position:relative;transition:background .2s;margin-top:2px">
-            <div style="position:absolute;top:3px;left:${S.featureFlags[f.id] ? '21px' : '3px'};width:16px;height:16px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,.2);transition:left .2s"></div>
+          <div style="display:flex;flex-wrap:wrap;gap:4px;margin-top:6px">
+            ${p.features.map(f => `<span style="font-size:10px;color:${S.phase===p.n ? p.col : 'var(--text-3)'};background:${S.phase===p.n ? p.col+'12' : '#f3f4f6'};padding:2px 7px;border-radius:5px">${f}</span>`).join('')}
           </div>
-        </div>
-        ${S.featureFlags[f.id] ? `<div style="margin-top:8px;padding:6px 10px;background:rgba(101,89,255,.07);border-radius:8px;font-size:10px;color:var(--purple);font-weight:600">✓ Active — visible in Programme → AI Builder</div>` : ''}
-      </div>`).join('')}
+        </div>`).join('')}
+      </div>
     </div>
-    <div style="padding:10px 14px 14px;border-top:1px solid var(--border)">
-      <p style="font-size:10px;color:var(--text-4);margin:0;text-align:center">Feature flags are for demo purposes only. Changes apply immediately.</p>
+
+    <!-- Feature flags (auto-managed by phase) -->
+    <div style="padding:12px 14px 14px;margin-top:8px;border-top:1px solid var(--border)">
+      <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.07em;margin-bottom:8px">Feature Flags <span style="font-weight:500;text-transform:none;letter-spacing:0">(auto-managed by phase)</span></div>
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px;background:#f8f9fb;border-radius:8px">
+        <span style="font-size:11px;color:var(--text-2)">ProcurePro Schedule Input</span>
+        <div style="width:36px;height:20px;border-radius:10px;background:${S.featureFlags.procureproSchedule ? '#0ea5e9' : '#d1d5db'};position:relative;flex-shrink:0">
+          <div style="position:absolute;top:2px;left:${S.featureFlags.procureproSchedule ? '18px' : '2px'};width:16px;height:16px;border-radius:50%;background:white;box-shadow:0 1px 3px rgba(0,0,0,.2)"></div>
+        </div>
+      </div>
     </div>
   </div>`;
 }
@@ -3697,7 +3733,7 @@ function render() {
         ${view()}
       </div>
     </div>
-    ${featureFlagsPanel()}
+    ${demoControlsPanel()}
     ${procureProModal()}`;
 
   // Nav clicks (sidebar + generic [data-view] except back-button which has data-exit-project)
@@ -3957,20 +3993,20 @@ function render() {
     if (e.target === e.currentTarget) { S = { ...S, showProcureProModal: false }; render(); }
   });
 
-  // Feature flags panel toggle
-  document.getElementById('ff-toggle')?.addEventListener('click', e => {
+  // Demo controls panel toggle
+  document.getElementById('demo-toggle')?.addEventListener('click', e => {
     e.stopPropagation();
-    S = { ...S, showFeatureFlags: !S.showFeatureFlags };
+    S = { ...S, showDemoPanel: !S.showDemoPanel };
     render();
   });
 
-  // Feature flag individual toggles
-  document.querySelectorAll('[data-ff-toggle]').forEach(el =>
+  // Phase selector
+  document.querySelectorAll('[data-set-phase]').forEach(el =>
     el.addEventListener('click', e => {
       e.stopPropagation();
-      const id = el.dataset.ffToggle;
-      S = { ...S, featureFlags: { ...S.featureFlags, [id]: !S.featureFlags[id] } };
-      render();
+      const n = parseInt(el.dataset.setPhase);
+      const phase = PHASES.find(p => p.n === n);
+      if (phase && !phase.comingSoon) setPhase(n);
     })
   );
 }
