@@ -506,6 +506,7 @@ const I = {
   jobs:    ic('<path d="M2 20h20M6 20V10M18 20V10M12 20V4M2 10h20M4 10 12 4l8 6"/>'),
   drawings:ic('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'),
   programme:ic('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="14" x2="17" y2="14"/><line x1="7" y1="18" x2="14" y2="18"/>'),
+  passport:ic('<rect x="2" y="5" width="20" height="14" rx="3"/><circle cx="9" cy="12" r="3"/><path d="M13 9h5M13 12h4M13 15h5"/>'),
   permits: ic('<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="m9 12 2 2 4-4"/>'),
   people:  ic('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
   plus:    ic('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
@@ -561,6 +562,7 @@ const CON_NAV = [
   { view:'con-jobs',    label:'Jobs & Projects', icon:'jobs' },
   { view:'con-drawings',label:'Plans & Drawings', icon:'drawings' },
   { view:'con-programme',label:'Programme',    icon:'programme' },
+  { view:'con-passport',label:'Worker Passport', icon:'passport', phase:2 },
   { sep: true },
   { label:'SAFETYCULTURE', section: true },
   { view:'inspections', label:'Inspections',   icon:'insp', badge: 3 },
@@ -587,8 +589,51 @@ const PROJECTS = [
   },
 ];
 
+// ── Workers data (for Worker Passport module) ────────────────
+const WORKERS = [
+  { id:'w1', name:'James Chen',     initials:'JC', role:'Steel Fixer',        company:'Civmec Ltd',        project:'civmec',       inducted:true,  inductedDate:'12 Mar 2026', overall:'amber',
+    certs:[
+      { name:'White Card (Construction Induction)', number:'WC-88241',  expires:'2027-03-15', status:'valid'    },
+      { name:'Working at Heights',                   number:'WAH-44109', expires:'2026-09-01', status:'expiring' },
+      { name:'Elevated Work Platform (EWP)',          number:'EWP-20183', expires:'2024-08-20', status:'expired'  },
+      { name:'Dogman Licence (DG)',                   number:'DG-77342',  expires:'2027-11-30', status:'valid'    },
+    ]},
+  { id:'w2', name:'Priya Sharma',   initials:'PS', role:'Site Supervisor',     company:'BDW Constructions', project:'north-harbour', inducted:true,  inductedDate:'5 Jan 2026',  overall:'green',
+    certs:[
+      { name:'White Card (Construction Induction)', number:'WC-51903',  expires:'2028-01-20', status:'valid' },
+      { name:'Working at Heights',                   number:'WAH-38841', expires:'2027-06-15', status:'valid' },
+      { name:'First Aid (Level 2)',                  number:'FA-99201',  expires:'2026-11-30', status:'valid' },
+      { name:'Scaffolding (Basic)',                  number:'SC-22567',  expires:'2027-02-28', status:'valid' },
+    ]},
+  { id:'w3', name:"Tom O'Brien",    initials:'TO', role:'Rigger',              company:'WA Rigging Co.',    project:'civmec',       inducted:true,  inductedDate:'20 Feb 2026', overall:'red',
+    certs:[
+      { name:'White Card (Construction Induction)', number:'WC-61110',  expires:'2025-04-30', status:'expired'  },
+      { name:'Basic Rigging Licence (RB)',           number:'RB-30445',  expires:'2025-10-15', status:'expired'  },
+      { name:'Dogman Licence (DG)',                   number:'DG-44872',  expires:'2026-08-20', status:'expiring' },
+    ]},
+  { id:'w4', name:'Sarah Kim',      initials:'SK', role:'Safety Officer',      company:'BDW Constructions', project:'north-harbour', inducted:true,  inductedDate:'5 Jan 2026',  overall:'green',
+    certs:[
+      { name:'White Card (Construction Induction)', number:'WC-72301',  expires:'2028-05-10', status:'valid' },
+      { name:'WHS Cert IV',                          number:'WHS-11092', expires:'2027-09-30', status:'valid' },
+      { name:'First Aid (Level 2)',                  number:'FA-44203',  expires:'2027-03-15', status:'valid' },
+      { name:'Working at Heights',                   number:'WAH-58810', expires:'2027-01-20', status:'valid' },
+    ]},
+  { id:'w5', name:'Marcus Webb',    initials:'MW', role:'Concrete Finisher',   company:'Finbar Concrete',   project:'fremantle',    inducted:true,  inductedDate:'15 Apr 2026', overall:'amber',
+    certs:[
+      { name:'White Card (Construction Induction)', number:'WC-34209',  expires:'2027-07-22', status:'valid'    },
+      { name:'Working at Heights',                   number:'WAH-71102', expires:'2026-07-01', status:'expiring' },
+      { name:'Certificate III in Concreting',       number:'CPC-38804', expires:'2029-01-01', status:'valid'    },
+    ]},
+  { id:'w6', name:'Dev Patel',      initials:'DP', role:'Crane Operator',      company:'Civmec Ltd',        project:'civmec',       inducted:false, inductedDate:null,          overall:'amber',
+    certs:[
+      { name:'White Card (Construction Induction)', number:'WC-90112',  expires:'2027-10-15', status:'valid'    },
+      { name:'Crane Operator — Tower (CT)',          number:'CT-55781',  expires:'2027-08-30', status:'valid'    },
+      { name:'Dogman Licence (DG)',                   number:'DG-61204',  expires:'2026-08-10', status:'expiring' },
+    ]},
+];
+
 // ── State ────────────────────────────────────────────────────
-let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showDemoPanel: false, showProcureProModal: false, phase: 1, featureFlags: { procureproSchedule: false } };
+let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showDemoPanel: false, showProcureProModal: false, phase: 1, featureFlags: { procureproSchedule: false, workerPassport: false }, passportView: 'dashboard', passportWorker: null, passportVerifyStep: 0, passportVerifyWorker: null, passportInductionStep: 0 };
 
 // Set phase (does not affect feature flags)
 function setPhase(n) {
@@ -616,6 +661,8 @@ function sidebar() {
   const items = nav.map(n => {
     if (n.sep) return `<div class="nav-sep"></div>`;
     if (n.section) return `<div class="nav-label">${n.label}</div>`;
+    // Phase-gated items: hide if current phase < required phase
+    if (n.phase && S.phase < n.phase) return '';
     const active = activeCheck(n.view);
     return `<div class="nav-item ${active ? activeClass : ''}" data-view="${n.view}">
       <span class="ni">${I[n.icon] || ''}</span>
@@ -3464,6 +3511,7 @@ function view() {
     case 'con-project':  return vConProject();
     case 'con-drawings':   return vConDrawings();
     case 'con-programme':  return vConProgramme();
+    case 'con-passport':   return vConPassport();
     case 'settings':     return vGeneric('Settings');
     case 'ai':           return vGeneric('SafetyCulture AI');
     default:             return vGeneric(S.view.replace('con-','').replace(/-/g,' ').replace(/\b\w/g,c=>c.toUpperCase()));
@@ -3637,6 +3685,549 @@ function procureProModal() {
   </div>`;
 }
 
+// ── Worker Passport View ─────────────────────────────────────
+function vConPassport() {
+  const statusColor = { valid:'#16a34a', expiring:'#d97706', expired:'#dc2626' };
+  const statusBg    = { valid:'rgba(22,163,74,.08)', expiring:'rgba(217,119,6,.09)', expired:'rgba(220,38,38,.08)' };
+  const statusLabel = { valid:'Valid', expiring:'Expiring Soon', expired:'Expired' };
+  const overallColor= { green:'#16a34a', amber:'#d97706', red:'#dc2626' };
+  const overallBg   = { green:'rgba(22,163,74,.08)', amber:'rgba(217,119,6,.09)', red:'rgba(220,38,38,.08)' };
+  const overallLabel= { green:'Compliant', amber:'Review Required', red:'Non-Compliant' };
+  const overallIcon = { green:'✓', amber:'⚠', red:'✕' };
+
+  // ── Sub-view: Worker Wallet (mobile-style credential card) ──
+  if (S.passportView === 'wallet' && S.passportWorker) {
+    const w = WORKERS.find(x => x.id === S.passportWorker);
+    if (!w) { S = { ...S, passportView:'dashboard' }; return vConPassport(); }
+    const avatarColors = { w1:'#6559FF', w2:'#0ea5e9', w3:'#dc2626', w4:'#10b981', w5:'#f59e0b', w6:'#8b5cf6' };
+    const ac = avatarColors[w.id] || '#6559FF';
+    const qrPattern = `
+      <rect x="2" y="2" width="8" height="8" rx="1" fill="currentColor"/>
+      <rect x="3" y="3" width="6" height="6" rx=".5" fill="white"/>
+      <rect x="4" y="4" width="4" height="4" fill="currentColor"/>
+      <rect x="14" y="2" width="8" height="8" rx="1" fill="currentColor"/>
+      <rect x="15" y="3" width="6" height="6" rx=".5" fill="white"/>
+      <rect x="16" y="4" width="4" height="4" fill="currentColor"/>
+      <rect x="2" y="14" width="8" height="8" rx="1" fill="currentColor"/>
+      <rect x="3" y="15" width="6" height="6" rx=".5" fill="white"/>
+      <rect x="4" y="16" width="4" height="4" fill="currentColor"/>
+      <rect x="12" y="12" width="3" height="3" fill="currentColor"/>
+      <rect x="16" y="12" width="2" height="2" fill="currentColor"/>
+      <rect x="19" y="12" width="3" height="3" fill="currentColor"/>
+      <rect x="12" y="16" width="2" height="2" fill="currentColor"/>
+      <rect x="15" y="15" width="3" height="3" fill="currentColor"/>
+      <rect x="19" y="16" width="3" height="2" fill="currentColor"/>
+      <rect x="12" y="19" width="3" height="3" fill="currentColor"/>
+      <rect x="16" y="20" width="2" height="2" fill="currentColor"/>
+      <rect x="19" y="19" width="3" height="3" fill="currentColor"/>`;
+
+    return `
+    <div class="page-wrap" style="background:#f3f4f6;min-height:100%">
+      <div style="max-width:1100px;margin:0 auto;padding:28px 28px 48px">
+
+        <!-- Header -->
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+          <button data-passport-view="dashboard" style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2);display:flex;align-items:center;gap:6px">
+            ← Back
+          </button>
+          <div>
+            <div style="font-size:20px;font-weight:700;color:var(--text)">${w.name} — Credential Wallet</div>
+            <div style="font-size:13px;color:var(--text-3)">${w.role} · ${w.company}</div>
+          </div>
+          <div style="margin-left:auto;display:flex;gap:10px">
+            <button style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">Download PDF</button>
+          </div>
+        </div>
+
+        <div style="display:grid;grid-template-columns:360px 1fr;gap:24px;align-items:start">
+
+          <!-- LEFT: Mobile phone mockup -->
+          <div>
+            <!-- Phone frame -->
+            <div style="background:#1F2533;border-radius:36px;padding:12px;box-shadow:0 24px 60px rgba(0,0,0,.25);position:relative">
+              <!-- Notch -->
+              <div style="width:80px;height:20px;background:#1F2533;border-radius:10px;margin:0 auto 8px;position:relative;z-index:2;display:flex;align-items:center;justify-content:center">
+                <div style="width:50px;height:12px;background:#111827;border-radius:6px"></div>
+              </div>
+              <!-- Screen -->
+              <div style="background:white;border-radius:26px;overflow:hidden;min-height:580px">
+                <!-- SC Construct header band -->
+                <div style="background:linear-gradient(135deg,#1F2533 0%,#2d3748 100%);padding:20px 18px 16px;position:relative">
+                  <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px">SafetyCulture Construct</div>
+                  <div style="font-size:15px;font-weight:800;color:white">Digital Worker Passport</div>
+                  <!-- QR badge top-right -->
+                  <div style="position:absolute;top:14px;right:16px;background:rgba(255,255,255,.1);border-radius:8px;padding:6px">
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="white">${qrPattern}</svg>
+                  </div>
+                </div>
+
+                <!-- Avatar + name -->
+                <div style="padding:16px 18px 12px;background:#f8f9fb;border-bottom:1px solid #e5e7eb">
+                  <div style="display:flex;align-items:center;gap:12px">
+                    <div style="width:48px;height:48px;border-radius:14px;background:${ac};display:flex;align-items:center;justify-content:center;font-size:16px;font-weight:800;color:white;flex-shrink:0">${w.initials}</div>
+                    <div>
+                      <div style="font-size:14px;font-weight:700;color:#111827">${w.name}</div>
+                      <div style="font-size:11px;color:#6b7280;margin-top:1px">${w.role}</div>
+                      <div style="font-size:10px;color:#9ca3af">${w.company}</div>
+                    </div>
+                    <div style="margin-left:auto">
+                      <div style="background:${overallBg[w.overall]};color:${overallColor[w.overall]};font-size:10px;font-weight:700;padding:4px 9px;border-radius:20px;display:flex;align-items:center;gap:4px">
+                        <span>${overallIcon[w.overall]}</span> ${overallLabel[w.overall]}
+                      </div>
+                    </div>
+                  </div>
+                  <div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;margin-top:10px">
+                    <div style="background:white;border-radius:8px;padding:6px 10px;border:1px solid #e5e7eb">
+                      <div style="font-size:9px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Site Induction</div>
+                      <div style="font-size:11px;font-weight:700;color:${w.inducted ? '#16a34a' : '#dc2626'};margin-top:1px">${w.inducted ? '✓ Completed' : '✕ Required'}</div>
+                      ${w.inducted ? `<div style="font-size:9px;color:#9ca3af">${w.inductedDate}</div>` : ''}
+                    </div>
+                    <div style="background:white;border-radius:8px;padding:6px 10px;border:1px solid #e5e7eb">
+                      <div style="font-size:9px;color:#9ca3af;font-weight:600;text-transform:uppercase;letter-spacing:.04em">Credentials</div>
+                      <div style="font-size:11px;font-weight:700;color:#111827;margin-top:1px">${w.certs.length} on file</div>
+                      <div style="font-size:9px;color:#9ca3af">${w.certs.filter(c=>c.status==='valid').length} valid</div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Cert list -->
+                <div style="padding:12px 14px">
+                  <div style="font-size:10px;font-weight:700;color:#6b7280;text-transform:uppercase;letter-spacing:.06em;margin-bottom:8px">Credentials & Licences</div>
+                  <div style="display:flex;flex-direction:column;gap:6px">
+                    ${w.certs.map(c => `
+                    <div style="background:${statusBg[c.status]};border:1px solid ${statusColor[c.status]}22;border-radius:10px;padding:8px 10px;display:flex;align-items:center;justify-content:space-between">
+                      <div>
+                        <div style="font-size:10px;font-weight:700;color:#111827;line-height:1.3">${c.name}</div>
+                        <div style="font-size:9px;color:#6b7280;margin-top:1px">${c.number}</div>
+                      </div>
+                      <div style="text-align:right;flex-shrink:0;margin-left:8px">
+                        <div style="font-size:9px;font-weight:700;color:${statusColor[c.status]};background:white;padding:2px 6px;border-radius:5px">${statusLabel[c.status]}</div>
+                        <div style="font-size:9px;color:#9ca3af;margin-top:2px">Exp ${c.expires.split('-').slice(1).reverse().join('/')}/${c.expires.split('-')[0].slice(2)}</div>
+                      </div>
+                    </div>`).join('')}
+                  </div>
+                </div>
+
+                <!-- QR section -->
+                <div style="margin:8px 14px 14px;background:#1F2533;border-radius:14px;padding:14px;text-align:center">
+                  <div style="font-size:10px;color:rgba(255,255,255,.5);margin-bottom:8px;font-weight:600">SCAN TO VERIFY</div>
+                  <div style="background:white;border-radius:10px;padding:12px;display:inline-block">
+                    <svg width="80" height="80" viewBox="0 0 24 24" fill="#1F2533">${qrPattern}</svg>
+                  </div>
+                  <div style="font-size:9px;color:rgba(255,255,255,.35);margin-top:8px">Passport ID: SC-${w.id.toUpperCase()}-2026</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Apple Wallet button -->
+            <div style="text-align:center;margin-top:14px">
+              <button style="background:#000;color:white;border:none;border-radius:12px;padding:11px 22px;font-size:13px;font-weight:600;cursor:pointer;display:inline-flex;align-items:center;gap:8px">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="white"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/></svg>
+                Add to Apple Wallet
+              </button>
+            </div>
+          </div>
+
+          <!-- RIGHT: Cert detail panel -->
+          <div style="display:flex;flex-direction:column;gap:16px">
+            <!-- Compliance summary -->
+            <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px">
+              <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:14px">Compliance Summary</div>
+              <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px">
+                <div style="background:#f8f9fb;border-radius:10px;padding:12px;text-align:center">
+                  <div style="font-size:24px;font-weight:800;color:#16a34a">${w.certs.filter(c=>c.status==='valid').length}</div>
+                  <div style="font-size:11px;color:var(--text-3);margin-top:2px">Valid</div>
+                </div>
+                <div style="background:#fef3c7;border-radius:10px;padding:12px;text-align:center">
+                  <div style="font-size:24px;font-weight:800;color:#d97706">${w.certs.filter(c=>c.status==='expiring').length}</div>
+                  <div style="font-size:11px;color:var(--text-3);margin-top:2px">Expiring</div>
+                </div>
+                <div style="background:#fee2e2;border-radius:10px;padding:12px;text-align:center">
+                  <div style="font-size:24px;font-weight:800;color:#dc2626">${w.certs.filter(c=>c.status==='expired').length}</div>
+                  <div style="font-size:11px;color:var(--text-3);margin-top:2px">Expired</div>
+                </div>
+              </div>
+              <div style="background:${overallBg[w.overall]};border:1.5px solid ${overallColor[w.overall]}33;border-radius:10px;padding:12px;display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;border-radius:50%;background:${overallColor[w.overall]};display:flex;align-items:center;justify-content:center;font-size:18px;color:white;font-weight:800;flex-shrink:0">${overallIcon[w.overall]}</div>
+                <div>
+                  <div style="font-size:13px;font-weight:700;color:${overallColor[w.overall]}">${overallLabel[w.overall]}</div>
+                  <div style="font-size:12px;color:var(--text-3);margin-top:2px">${w.overall === 'red' ? 'Worker has expired credentials — cannot be on-site' : w.overall === 'amber' ? 'Action required before next on-site date' : 'All credentials current and site-ready'}</div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Cert table -->
+            <div style="background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+              <div style="padding:16px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+                <div style="font-size:14px;font-weight:700;color:var(--text)">Credentials on File</div>
+                <button style="background:#6559FF;color:white;border:none;border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer">+ Add Credential</button>
+              </div>
+              <table style="width:100%;border-collapse:collapse">
+                <thead>
+                  <tr style="background:#f8f9fb">
+                    <th style="padding:10px 20px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Credential</th>
+                    <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Number</th>
+                    <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Expiry</th>
+                    <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Status</th>
+                    <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  ${w.certs.map((c,i) => `
+                  <tr style="border-top:1px solid var(--border);${i%2===0?'background:white':'background:#fafafa'}">
+                    <td style="padding:12px 20px">
+                      <div style="font-size:13px;font-weight:600;color:var(--text)">${c.name}</div>
+                    </td>
+                    <td style="padding:12px 16px;font-size:13px;color:var(--text-3)">${c.number}</td>
+                    <td style="padding:12px 16px;font-size:13px;color:var(--text-2)">${c.expires}</td>
+                    <td style="padding:12px 16px">
+                      <span style="background:${statusBg[c.status]};color:${statusColor[c.status]};font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px">${statusLabel[c.status]}</span>
+                    </td>
+                    <td style="padding:12px 16px">
+                      <button style="font-size:11px;color:#6559FF;font-weight:600;background:none;border:none;cursor:pointer;padding:0">Renew</button>
+                    </td>
+                  </tr>`).join('')}
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── Sub-view: Verify Worker (foreman scan flow) ─────────────
+  if (S.passportView === 'verify') {
+    const w = S.passportVerifyWorker ? WORKERS.find(x => x.id === S.passportVerifyWorker) : null;
+
+    if (S.passportVerifyStep === 0) {
+      return `
+      <div class="page-wrap" style="background:#f3f4f6;min-height:100%">
+        <div style="max-width:700px;margin:0 auto;padding:28px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+            <button data-passport-view="dashboard" style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">← Back</button>
+            <div>
+              <div style="font-size:20px;font-weight:700;color:var(--text)">Verify Worker</div>
+              <div style="font-size:13px;color:var(--text-3)">Scan worker's QR code to check credentials</div>
+            </div>
+          </div>
+          <div style="background:white;border:1.5px solid var(--border);border-radius:16px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,.07)">
+            <div style="background:#1F2533;padding:14px 20px">
+              <div style="font-size:13px;font-weight:600;color:white">📷  Camera — QR Scanner</div>
+            </div>
+            <div style="background:#111827;aspect-ratio:4/3;position:relative;display:flex;align-items:center;justify-content:center">
+              <div style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center">
+                <div style="width:200px;height:200px;position:relative">
+                  <div style="position:absolute;top:0;left:0;width:32px;height:32px;border-top:3px solid #6559FF;border-left:3px solid #6559FF;border-radius:4px 0 0 0"></div>
+                  <div style="position:absolute;top:0;right:0;width:32px;height:32px;border-top:3px solid #6559FF;border-right:3px solid #6559FF;border-radius:0 4px 0 0"></div>
+                  <div style="position:absolute;bottom:0;left:0;width:32px;height:32px;border-bottom:3px solid #6559FF;border-left:3px solid #6559FF;border-radius:0 0 0 4px"></div>
+                  <div style="position:absolute;bottom:0;right:0;width:32px;height:32px;border-bottom:3px solid #6559FF;border-right:3px solid #6559FF;border-radius:0 0 4px 0"></div>
+                  <div style="position:absolute;top:15%;left:8px;right:8px;height:2px;background:linear-gradient(90deg,transparent,#6559FF,transparent);animation:scan-line 2s ease-in-out infinite"></div>
+                  <style>@keyframes scan-line{0%,100%{top:15%}50%{top:85%}}</style>
+                </div>
+              </div>
+              <div style="position:absolute;bottom:20px;left:0;right:0;text-align:center">
+                <div style="color:rgba(255,255,255,.6);font-size:13px">Point camera at worker's QR code</div>
+              </div>
+            </div>
+            <div style="padding:20px;display:flex;flex-direction:column;gap:12px;align-items:center">
+              <div style="font-size:13px;color:var(--text-3);text-align:center">Simulate a scan to see the verification result:</div>
+              <div style="display:flex;gap:10px;flex-wrap:wrap;justify-content:center">
+                <button data-passport-scan="w1" style="background:#fff8e1;border:1.5px solid #fde68a;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;color:#92400e">📲 James Chen — Amber</button>
+                <button data-passport-scan="w2" style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;color:#14532d">📲 Priya Sharma — Green</button>
+                <button data-passport-scan="w3" style="background:#fef2f2;border:1.5px solid #fecaca;border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;color:#7f1d1d">📲 Tom O'Brien — Red</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    }
+
+    if (S.passportVerifyStep === 1) {
+      return `
+      <div class="page-wrap" style="background:#f3f4f6;min-height:100%;display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center">
+          <div style="width:80px;height:80px;border-radius:50%;border:4px solid #e5e7eb;border-top-color:#6559FF;animation:spin .8s linear infinite;margin:0 auto 20px"></div>
+          <style>@keyframes spin{to{transform:rotate(360deg)}}</style>
+          <div style="font-size:18px;font-weight:700;color:var(--text)">Verifying credentials…</div>
+          <div style="font-size:13px;color:var(--text-3);margin-top:6px">Checking certifications and site induction</div>
+        </div>
+      </div>`;
+    }
+
+    if (S.passportVerifyStep === 2 && w) {
+      const resultColors = {
+        green:{ bg:'#f0fdf4', border:'#bbf7d0', icon:'✓', text:'SITE READY', sub:'All credentials valid — worker cleared for site.' },
+        amber:{ bg:'#fffbeb', border:'#fde68a', icon:'⚠', text:'REVIEW REQUIRED', sub:'One or more credentials require attention before on-site work.' },
+        red:{ bg:'#fef2f2', border:'#fecaca', icon:'✕', text:'DO NOT ADMIT', sub:'Worker has expired credentials — site access denied.' }
+      };
+      const r = resultColors[w.overall];
+      return `
+      <div class="page-wrap" style="background:#f3f4f6;min-height:100%">
+        <div style="max-width:600px;margin:0 auto;padding:28px">
+          <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+            <button data-passport-verify-reset style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">← Scan Another</button>
+            <button data-passport-view="dashboard" style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">Dashboard</button>
+          </div>
+          <div style="background:${r.bg};border:2px solid ${r.border};border-radius:20px;padding:32px;text-align:center;margin-bottom:20px">
+            <div style="width:80px;height:80px;border-radius:50%;background:${overallColor[w.overall]};display:flex;align-items:center;justify-content:center;font-size:36px;color:white;font-weight:800;margin:0 auto 16px">${r.icon}</div>
+            <div style="font-size:30px;font-weight:800;color:${overallColor[w.overall]};letter-spacing:.02em">${r.text}</div>
+            <div style="font-size:14px;color:var(--text-3);margin-top:8px">${r.sub}</div>
+          </div>
+          <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:20px;margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:14px">
+              <div style="width:52px;height:52px;border-radius:14px;background:${overallColor[w.overall]};display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:800;color:white;flex-shrink:0">${w.initials}</div>
+              <div style="flex:1">
+                <div style="font-size:16px;font-weight:700;color:var(--text)">${w.name}</div>
+                <div style="font-size:13px;color:var(--text-3)">${w.role} · ${w.company}</div>
+                <div style="font-size:12px;color:${w.inducted ? '#16a34a' : '#dc2626'};margin-top:3px;font-weight:600">${w.inducted ? '✓ Site induction complete' : '✕ Site induction not completed'}</div>
+              </div>
+              <div style="text-align:right">
+                <div style="font-size:10px;color:var(--text-4);margin-bottom:2px">Verified</div>
+                <div style="font-size:12px;font-weight:600;color:var(--text-2)">${new Date().toLocaleTimeString('en-AU',{hour:'2-digit',minute:'2-digit'})}</div>
+              </div>
+            </div>
+          </div>
+          <div style="background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+            <div style="padding:14px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--text)">Credential Check</div>
+            ${w.certs.map(c => `
+            <div style="padding:11px 18px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;justify-content:space-between">
+              <div style="font-size:13px;color:var(--text-2)">${c.name}</div>
+              <span style="background:${statusBg[c.status]};color:${statusColor[c.status]};font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;white-space:nowrap">${statusLabel[c.status]}</span>
+            </div>`).join('')}
+          </div>
+          <div style="text-align:center;margin-top:20px">
+            <button data-passport-verify-reset style="background:#6559FF;color:white;border:none;border-radius:12px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer">Scan Another Worker</button>
+          </div>
+        </div>
+      </div>`;
+    }
+  }
+
+  // ── Sub-view: Site Induction flow ───────────────────────────
+  if (S.passportView === 'induction') {
+    const steps = [
+      { label:'Worker Details',    icon:'👤', desc:'Collect name, date of birth, employer, and role.' },
+      { label:'Credential Upload', icon:'📎', desc:'Upload White Card, licences, and supporting documents.' },
+      { label:'Site Safety Brief', icon:'🦺', desc:'Watch the 4-minute site safety video and confirm understanding.' },
+      { label:'Sign & Confirm',    icon:'✍️', desc:'Digital signature — worker confirms all details are correct.' },
+      { label:'Passport Issued',   icon:'🪪', desc:'Digital Worker Passport generated and added to wallet.' },
+    ];
+    const step = S.passportInductionStep || 0;
+    const isLast = step === steps.length - 1;
+    const isDone = step >= steps.length;
+
+    if (isDone) {
+      return `
+      <div class="page-wrap" style="background:#f3f4f6;min-height:100%;display:flex;align-items:center;justify-content:center">
+        <div style="background:white;border:1.5px solid #bbf7d0;border-radius:20px;padding:48px 40px;text-align:center;max-width:480px">
+          <div style="font-size:48px;margin-bottom:16px">🪪</div>
+          <div style="font-size:24px;font-weight:800;color:#16a34a;margin-bottom:8px">Passport Issued!</div>
+          <div style="font-size:14px;color:var(--text-3);margin-bottom:24px">James Chen's Digital Worker Passport has been created and sent to their phone. They can now show their credential wallet and QR code for on-site verification.</div>
+          <button data-passport-view="dashboard" style="background:#6559FF;color:white;border:none;border-radius:12px;padding:12px 32px;font-size:14px;font-weight:700;cursor:pointer">Back to Dashboard</button>
+        </div>
+      </div>`;
+    }
+
+    return `
+    <div class="page-wrap" style="background:#f3f4f6;min-height:100%">
+      <div style="max-width:700px;margin:0 auto;padding:28px">
+        <div style="display:flex;align-items:center;gap:12px;margin-bottom:24px">
+          <button data-passport-view="dashboard" style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:8px 14px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">← Back</button>
+          <div>
+            <div style="font-size:20px;font-weight:700;color:var(--text)">New Worker Induction</div>
+            <div style="font-size:13px;color:var(--text-3)">Step ${step+1} of ${steps.length} — ${steps[step].label}</div>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div style="background:white;border:1.5px solid var(--border);border-radius:14px;padding:18px;margin-bottom:20px">
+          <div style="display:flex;gap:0;position:relative">
+            <div style="position:absolute;top:16px;left:16px;right:16px;height:2px;background:#e5e7eb;z-index:0"></div>
+            <div style="position:absolute;top:16px;left:16px;height:2px;background:#6559FF;z-index:1;width:${['0%','25%','50%','75%','100%'][step]||'0%'};transition:width .3s"></div>
+            ${steps.map((s,i) => `
+            <div style="flex:1;display:flex;flex-direction:column;align-items:center;gap:6px;position:relative;z-index:2">
+              <div style="width:32px;height:32px;border-radius:50%;background:${i<=step?'#6559FF':'#e5e7eb'};border:2px solid ${i<=step?'#6559FF':'#e5e7eb'};display:flex;align-items:center;justify-content:center;font-size:${i<step?'14px':'13px'};color:${i<=step?'white':'#9ca3af'}">${i<step?'✓':i+1}</div>
+              <div style="font-size:10px;font-weight:${i===step?'700':'500'};color:${i===step?'#6559FF':i<step?'var(--text-2)':'var(--text-4)'};text-align:center;white-space:nowrap">${s.label}</div>
+            </div>`).join('')}
+          </div>
+        </div>
+
+        <!-- Step content -->
+        <div style="background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+          <div style="padding:24px 28px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:14px">
+            <div style="font-size:32px">${steps[step].icon}</div>
+            <div>
+              <div style="font-size:17px;font-weight:700;color:var(--text)">${steps[step].label}</div>
+              <div style="font-size:13px;color:var(--text-3);margin-top:3px">${steps[step].desc}</div>
+            </div>
+          </div>
+
+          <div style="padding:28px">
+            ${step === 0 ? `
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px">
+              <div><label style="font-size:12px;font-weight:600;color:var(--text-3);display:block;margin-bottom:6px">Full Name</label><input value="James Chen" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text)"/></div>
+              <div><label style="font-size:12px;font-weight:600;color:var(--text-3);display:block;margin-bottom:6px">Date of Birth</label><input value="14/06/1988" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text)"/></div>
+              <div><label style="font-size:12px;font-weight:600;color:var(--text-3);display:block;margin-bottom:6px">Employer</label><input value="Civmec Ltd" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text)"/></div>
+              <div><label style="font-size:12px;font-weight:600;color:var(--text-3);display:block;margin-bottom:6px">Role / Trade</label><input value="Steel Fixer" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text)"/></div>
+              <div><label style="font-size:12px;font-weight:600;color:var(--text-3);display:block;margin-bottom:6px">Mobile</label><input value="0412 344 892" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text)"/></div>
+              <div><label style="font-size:12px;font-weight:600;color:var(--text-3);display:block;margin-bottom:6px">Email</label><input value="j.chen@civmec.com.au" style="width:100%;border:1.5px solid var(--border);border-radius:9px;padding:9px 12px;font-size:13px;color:var(--text)"/></div>
+            </div>
+            ` : step === 1 ? `
+            <div style="display:flex;flex-direction:column;gap:12px">
+              <div style="border:2px dashed var(--border);border-radius:12px;padding:28px;text-align:center;background:#fafafa">
+                <div style="font-size:28px;margin-bottom:8px">📎</div>
+                <div style="font-size:14px;font-weight:600;color:var(--text-2)">Drop files here or click to upload</div>
+                <div style="font-size:12px;color:var(--text-4);margin-top:4px">White Card, licences, induction records — PDF, PNG, JPG</div>
+              </div>
+              <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:10px;padding:12px 14px;display:flex;align-items:center;gap:10px">
+                <span style="font-size:18px">✅</span>
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:#16a34a">White Card — WC-88241.pdf</div>
+                  <div style="font-size:11px;color:#16a34a">Uploaded · Verified</div>
+                </div>
+              </div>
+            </div>
+            ` : step === 2 ? `
+            <div style="text-align:center;padding:16px 0">
+              <div style="background:#1F2533;border-radius:14px;padding:20px;margin-bottom:20px">
+                <div style="font-size:13px;font-weight:600;color:rgba(255,255,255,.5);margin-bottom:8px">▶ Site Safety Video</div>
+                <div style="font-size:40px;margin-bottom:8px">🦺</div>
+                <div style="font-size:15px;font-weight:700;color:white">Civmec Structural Package — Site Safety Brief</div>
+                <div style="font-size:12px;color:rgba(255,255,255,.4);margin-top:4px">4:12 minutes · Watch before proceeding</div>
+                <div style="margin-top:16px;background:#6559FF;color:white;border-radius:10px;padding:10px 24px;display:inline-block;font-size:13px;font-weight:700;cursor:pointer">▶ Play Video</div>
+              </div>
+              <div style="background:#fef3c7;border:1px solid #fde68a;border-radius:10px;padding:12px 16px;text-align:left">
+                <div style="font-size:13px;font-weight:600;color:#d97706;margin-bottom:4px">⚠ Confirm understanding</div>
+                <label style="display:flex;align-items:center;gap:8px;font-size:13px;color:var(--text-2);cursor:pointer"><input type="checkbox" checked style="width:16px;height:16px"/> I have watched the full safety video and understand all site rules</label>
+              </div>
+            </div>
+            ` : step === 3 ? `
+            <div style="text-align:center;padding:16px 0">
+              <div style="font-size:13px;color:var(--text-3);margin-bottom:20px">By signing below, James Chen confirms all details provided are accurate and complete.</div>
+              <div style="border:1.5px solid var(--border);border-radius:12px;padding:20px;background:#fafafa;min-height:100px;display:flex;align-items:center;justify-content:center;margin-bottom:16px;font-family:Georgia,serif;font-size:26px;color:#374151;font-style:italic">James Chen</div>
+              <div style="font-size:12px;color:var(--text-4)">Signed digitally · ${new Date().toLocaleDateString('en-AU',{day:'numeric',month:'long',year:'numeric'})}</div>
+            </div>
+            ` : ''}
+          </div>
+
+          <div style="padding:20px 28px;background:#f8f9fb;border-top:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+            <button data-passport-induction-back style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:9px 18px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2);${step===0?'opacity:.4;pointer-events:none':''}">← Back</button>
+            <button data-passport-induction-next style="background:#6559FF;color:white;border:none;border-radius:10px;padding:9px 22px;font-size:13px;font-weight:700;cursor:pointer">${isLast ? '🪪 Issue Passport' : 'Continue →'}</button>
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── Default view: Compliance Dashboard ─────────────────────
+  const total = WORKERS.length;
+  const compliant = WORKERS.filter(w => w.overall === 'green').length;
+  const needsReview = WORKERS.filter(w => w.overall === 'amber').length;
+  const nonCompliant = WORKERS.filter(w => w.overall === 'red').length;
+  const notInducted = WORKERS.filter(w => !w.inducted).length;
+
+  return `
+  <div class="page-wrap">
+    <div style="padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:22px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:10px">
+          🪪 Worker Passport
+          <span style="font-size:11px;font-weight:700;background:#0ea5e918;color:#0ea5e9;padding:3px 10px;border-radius:7px;vertical-align:middle">Phase 2</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-3);margin-top:3px">Digital credentials, on-site verification and induction management</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button data-passport-view="induction" style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">✍️ New Induction</button>
+        <button data-passport-view="verify" style="background:#6559FF;color:white;border:none;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer">📷 Verify Worker</button>
+      </div>
+    </div>
+
+    <div style="padding:20px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      ${[
+        { label:'Total Workers',    val:total,       col:'#6559FF', bg:'rgba(101,89,255,.08)', icon:'👷' },
+        { label:'Compliant',        val:compliant,   col:'#16a34a', bg:'rgba(22,163,74,.08)',  icon:'✓'  },
+        { label:'Review Required',  val:needsReview, col:'#d97706', bg:'rgba(217,119,6,.09)',  icon:'⚠'  },
+        { label:'Non-Compliant',    val:nonCompliant,col:'#dc2626', bg:'rgba(220,38,38,.08)', icon:'✕'  },
+      ].map(s => `
+      <div style="background:${s.bg};border:1.5px solid ${s.col}22;border-radius:14px;padding:16px 18px">
+        <div style="font-size:11px;font-weight:700;color:${s.col};text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">${s.icon} ${s.label}</div>
+        <div style="font-size:32px;font-weight:800;color:${s.col}">${s.val}</div>
+      </div>`).join('')}
+    </div>
+
+    ${nonCompliant > 0 ? `
+    <div style="margin:0 28px 16px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:18px">🚨</span>
+      <div style="font-size:13px;color:#dc2626;font-weight:600">${nonCompliant} worker${nonCompliant>1?'s have':' has'} expired credentials and should not be on-site. Immediate action required.</div>
+    </div>` : ''}
+
+    ${notInducted > 0 ? `
+    <div style="margin:0 28px 16px;background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:13px 16px;display:flex;align-items:center;gap:10px">
+      <span style="font-size:18px">⚠️</span>
+      <div style="font-size:13px;color:#d97706;font-weight:600">${notInducted} worker${notInducted>1?'s have':' has'} not completed site induction. <span data-passport-view="induction" style="text-decoration:underline;cursor:pointer">Start induction →</span></div>
+    </div>` : ''}
+
+    <div style="margin:0 28px 28px;background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:14px;font-weight:700;color:var(--text)">All Workers — ${total} on register</div>
+        <div style="display:flex;gap:8px">
+          <div style="border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text-3);background:#fafafa;display:flex;align-items:center;gap:6px;cursor:pointer">${I.filter} Filter</div>
+          <button style="background:#6559FF18;color:#6559FF;border:none;border-radius:8px;padding:6px 14px;font-size:12px;font-weight:600;cursor:pointer">+ Add Worker</button>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead>
+          <tr style="background:#f8f9fb">
+            <th style="padding:10px 20px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Worker</th>
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Company</th>
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Credentials</th>
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Induction</th>
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Status</th>
+            <th style="padding:10px 16px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          ${WORKERS.map((w,i) => `
+          <tr style="border-top:1px solid var(--border);background:${w.overall==='red'?'rgba(220,38,38,.02)':i%2===0?'white':'#fafafa'}">
+            <td style="padding:13px 20px">
+              <div style="display:flex;align-items:center;gap:10px">
+                <div style="width:36px;height:36px;border-radius:10px;background:${overallColor[w.overall]};display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;flex-shrink:0">${w.initials}</div>
+                <div>
+                  <div style="font-size:13px;font-weight:600;color:var(--text)">${w.name}</div>
+                  <div style="font-size:11px;color:var(--text-3)">${w.role}</div>
+                </div>
+              </div>
+            </td>
+            <td style="padding:13px 16px;font-size:13px;color:var(--text-2)">${w.company}</td>
+            <td style="padding:13px 16px">
+              <div style="display:flex;gap:5px;align-items:center;flex-wrap:wrap">
+                ${w.certs.filter(c=>c.status==='valid').length>0?`<span style="background:rgba(22,163,74,.08);color:#16a34a;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px">${w.certs.filter(c=>c.status==='valid').length} valid</span>`:''}
+                ${w.certs.filter(c=>c.status==='expiring').length>0?`<span style="background:rgba(217,119,6,.09);color:#d97706;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px">${w.certs.filter(c=>c.status==='expiring').length} expiring</span>`:''}
+                ${w.certs.filter(c=>c.status==='expired').length>0?`<span style="background:rgba(220,38,38,.08);color:#dc2626;font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px">${w.certs.filter(c=>c.status==='expired').length} expired</span>`:''}
+              </div>
+            </td>
+            <td style="padding:13px 16px">
+              <span style="font-size:12px;font-weight:600;color:${w.inducted?'#16a34a':'#dc2626'}">${w.inducted?'✓ Complete':'✕ Required'}</span>
+            </td>
+            <td style="padding:13px 16px">
+              <span style="background:${overallBg[w.overall]};color:${overallColor[w.overall]};font-size:11px;font-weight:700;padding:4px 10px;border-radius:7px;display:inline-flex;align-items:center;gap:4px">
+                ${overallIcon[w.overall]} ${overallLabel[w.overall]}
+              </span>
+            </td>
+            <td style="padding:13px 16px">
+              <div style="display:flex;gap:8px">
+                <button data-passport-open="${w.id}" style="font-size:12px;color:#6559FF;font-weight:600;background:none;border:none;cursor:pointer;padding:0">View</button>
+                <button data-passport-scan-direct="${w.id}" style="font-size:12px;color:var(--text-3);font-weight:600;background:none;border:none;cursor:pointer;padding:0">Verify</button>
+              </div>
+            </td>
+          </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>
+  </div>`;
+}
+
 // ── Demo Controls Panel ───────────────────────────────────────
 const PHASES = [
   {
@@ -3651,8 +4242,8 @@ const PHASES = [
     n: 2,
     name: 'Phase 2',
     sub: 'Integrations & AI',
-    desc: 'Everything in Phase 1, plus third-party integrations and enhanced AI capabilities.',
-    features: ['ProcurePro Schedule Input integration', 'Import tender/quote from ProcurePro', 'Use ProcurePro sample document', 'AI programme creation from BOQ'],
+    desc: 'Everything in Phase 1, plus third-party integrations, enhanced AI capabilities, and Digital Worker Passport.',
+    features: ['ProcurePro Schedule Input', 'Digital Worker Passport', 'Credential Wallet & QR Verify', 'Site Induction → Auto Passport'],
     col: '#0ea5e9',
     comingSoon: false,
   },
@@ -3712,6 +4303,7 @@ function demoControlsPanel() {
       <div style="display:flex;flex-direction:column;gap:7px">
         ${[
           { id:'procureproSchedule', label:'ProcurePro Schedule Input', badge:'Integration', badgeCol:'#0ea5e9' },
+          { id:'workerPassport',     label:'Digital Worker Passport',   badge:'Phase 2',     badgeCol:'#0ea5e9' },
         ].map(f => `
         <div style="display:flex;align-items:center;justify-content:space-between;padding:9px 12px;background:#f8f9fb;border:1.5px solid ${S.featureFlags[f.id] ? f.badgeCol+'44' : 'var(--border)'};border-radius:10px">
           <div>
@@ -3752,6 +4344,9 @@ function render() {
         render();
       } else if (v === 'con-drawings') {
         S = { ...S, view: 'con-drawings', dwgView: 'register' };
+        render();
+      } else if (v === 'con-passport') {
+        S = { ...S, view: 'con-passport', passportView: 'dashboard', passportWorker: null, passportVerifyStep: 0, passportVerifyWorker: null, passportInductionStep: 0 };
         render();
       } else {
         go(v);
@@ -4022,6 +4617,91 @@ function render() {
       const id = el.dataset.ffToggle;
       S = { ...S, featureFlags: { ...S.featureFlags, [id]: !S.featureFlags[id] } };
       render();
+    })
+  );
+
+  // ── Worker Passport event handlers ──────────────────────────
+
+  // Navigate between passport sub-views
+  document.querySelectorAll('[data-passport-view]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const v = el.dataset.passportView;
+      if (v === 'dashboard') {
+        S = { ...S, passportView:'dashboard', passportWorker:null, passportVerifyStep:0, passportVerifyWorker:null, passportInductionStep:0 };
+      } else if (v === 'verify') {
+        S = { ...S, passportView:'verify', passportVerifyStep:0, passportVerifyWorker:null };
+      } else if (v === 'induction') {
+        S = { ...S, passportView:'induction', passportInductionStep:0 };
+      } else {
+        S = { ...S, passportView:v };
+      }
+      render();
+    })
+  );
+
+  // Open worker wallet (from table row or View button)
+  document.querySelectorAll('[data-passport-open]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, passportView:'wallet', passportWorker: el.dataset.passportOpen };
+      render();
+    })
+  );
+
+  // Simulate QR scan — show scanning animation then result
+  document.querySelectorAll('[data-passport-scan]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const workerId = el.dataset.passportScan;
+      S = { ...S, passportView:'verify', passportVerifyStep:1, passportVerifyWorker:workerId };
+      render();
+      // Auto-advance to result after 1.5s
+      setTimeout(() => {
+        S = { ...S, passportVerifyStep:2 };
+        render();
+      }, 1500);
+    })
+  );
+
+  // Direct verify from dashboard table
+  document.querySelectorAll('[data-passport-scan-direct]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const workerId = el.dataset.passportScanDirect;
+      S = { ...S, passportView:'verify', passportVerifyStep:1, passportVerifyWorker:workerId };
+      render();
+      setTimeout(() => {
+        S = { ...S, passportVerifyStep:2 };
+        render();
+      }, 1500);
+    })
+  );
+
+  // Reset verify flow
+  document.querySelectorAll('[data-passport-verify-reset]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, passportVerifyStep:0, passportVerifyWorker:null };
+      render();
+    })
+  );
+
+  // Induction next/back
+  document.querySelectorAll('[data-passport-induction-next]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, passportInductionStep: (S.passportInductionStep || 0) + 1 };
+      render();
+    })
+  );
+  document.querySelectorAll('[data-passport-induction-back]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      if ((S.passportInductionStep || 0) > 0) {
+        S = { ...S, passportInductionStep: S.passportInductionStep - 1 };
+        render();
+      }
     })
   );
 }
