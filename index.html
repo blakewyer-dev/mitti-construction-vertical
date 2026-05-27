@@ -507,6 +507,7 @@ const I = {
   drawings:ic('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>'),
   programme:ic('<rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/><line x1="7" y1="14" x2="17" y2="14"/><line x1="7" y1="18" x2="14" y2="18"/>'),
   passport:ic('<rect x="2" y="5" width="20" height="14" rx="3"/><circle cx="9" cy="12" r="3"/><path d="M13 9h5M13 12h4M13 15h5"/>'),
+  swms:    ic('<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="8" y1="13" x2="16" y2="13"/><line x1="8" y1="17" x2="16" y2="17"/><line x1="8" y1="9" x2="10" y2="9"/>'),
   permits: ic('<path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="2"/><path d="m9 12 2 2 4-4"/>'),
   people:  ic('<path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>'),
   plus:    ic('<line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/>'),
@@ -562,6 +563,7 @@ const CON_NAV = [
   { view:'con-jobs',    label:'Jobs & Projects', icon:'jobs' },
   { view:'con-drawings',label:'Plans & Drawings', icon:'drawings' },
   { view:'con-programme',label:'Programme',    icon:'programme' },
+  { view:'con-swms',    label:'SWMS & HRCW',  icon:'swms',      phase:2 },
   { view:'con-passport',label:'Worker Passport', icon:'passport', phase:2 },
   { sep: true },
   { label:'SAFETYCULTURE', section: true },
@@ -586,6 +588,107 @@ const PROJECTS = [
   },
   { id:'tonkin',        ico:'🛣️', color:'#f3e8ff', name:'Tonkin Highway Widening',   client:'Main Roads WA',    loc:'Midland WA',      status:'Tender',    pct:0,  value:'$12.4M', start:'—', end:'—',
     modules:{ drawings:{sheets:3,markups:0}, programme:{milestones:0,overdue:0}, permits:{active:0,expiring:0}, inspections:{done:0,due:0}, actions:{open:0,overdue:0}, issues:{open:0,critical:0}, training:{workers:0,pending:0}, documents:{total:3} }
+  },
+];
+
+// ── SWMS data ─────────────────────────────────────────────────
+const PPE_ITEMS = [
+  { id:'hardhat',    emoji:'⛑️',  label:'Hard Hat'          },
+  { id:'glasses',   emoji:'🥽',  label:'Safety Glasses'    },
+  { id:'hivs',      emoji:'🦺',  label:'Hi-Vis Vest'       },
+  { id:'boots',     emoji:'👢',  label:'Safety Boots'      },
+  { id:'gloves',    emoji:'🧤',  label:'Gloves'            },
+  { id:'arcflash',  emoji:'⚡',  label:'Arc Flash PPE'     },
+  { id:'harness',   emoji:'🪝',  label:'Full Body Harness' },
+  { id:'hearing',   emoji:'🔇',  label:'Hearing Protection'},
+  { id:'respirator',emoji:'😷',  label:'Respirator'        },
+  { id:'faceshield',emoji:'🛡️',  label:'Face Shield'       },
+  { id:'sunprot',   emoji:'🧴',  label:'Sun Protection'    },
+  { id:'hivls',     emoji:'👕',  label:'Hi-Vis Long Sleeve'},
+  { id:'lanyard',   emoji:'🔗',  label:'Safety Lanyard'    },
+];
+
+const SWMS_DOCS = [
+  { id:'swms-001', code:'CIV-HSE-SWS-003',
+    title:'Electrical Isolation — MV Switchboard, Building 4',
+    project:'civmec', state:'WA',
+    legislation:'Work Health and Safety Act 2020 (WA) + WHS Regulations 2022',
+    hrcw:['Electrical installations (>50V)', 'Work at height (>2m)'],
+    version:3, versionLabel:'v3.1', status:'approved',
+    createdBy:'Brett Harrison', approvedBy:'Sarah Kim',
+    approvedAt:'27 May 2026, 07:31am', nextReview:'27 Aug 2026',
+    permitRequired:'Client Permit + PTW required',
+    scopeOfWorks:'Isolation and de-energisation of the MV switchboard in Building 4, Level 2 plant room to allow installation of new metering equipment by Stowe AU. All LOTO procedures and PTW to be in place before any work commences.',
+    workers:{ assigned:8, signed:3 },
+    ppeRequired:['hardhat','glasses','hivs','boots','gloves','arcflash','hearing'],
+    approvalChain:[
+      { name:'Brett Harrison', role:'Site Supervisor',       status:'approved', time:'07:22am' },
+      { name:'Sarah Kim',      role:'Safety Manager (HSEQ)', status:'approved', time:'07:31am' },
+      { name:'M. Sims',        role:'Client Rep — Civmec',   status:'approved', time:'07:45am' },
+    ],
+    signedWorkers:[
+      { name:'James Chen',   role:'Steel Fixer',     time:'07:33am', method:'Kiosk' },
+      { name:'Dev Patel',    role:'Crane Operator',  time:'07:34am', method:'Kiosk' },
+      { name:'Priya Sharma', role:'Site Supervisor', time:'07:35am', method:'Kiosk' },
+    ],
+    steps:[
+      { num:1, title:'Isolate electrical supply', hazards:[
+        { desc:'Arc flash from residual charge', type:'Physical', controls:'LOTO procedure applied; Arc Flash PPE cat 2 minimum; Test Before Touch protocol enforced at all times', hierarchy:'Engineering / PPE', initL:4, initC:5, residL:2, residC:3 },
+        { desc:'Electrocution from induced voltage', type:'Physical', controls:'Rubber insulating gloves (Class 2); Verify zero-energy with approved tester; Competent Electrical Observer present', hierarchy:'Engineering / PPE', initL:3, initC:5, residL:1, residC:2 },
+      ]},
+      { num:2, title:'Access switchboard area', hazards:[
+        { desc:'Slip / fall on wet switchroom floor', type:'Environmental', controls:'Anti-slip matting at entry; Wet floor signage; Non-slip footwear; Inspect and dry path before commencing', hierarchy:'Engineering / Admin', initL:3, initC:3, residL:2, residC:2, siteAdd:true },
+        { desc:'Struck by falling tools or equipment', type:'Physical', controls:'Exclusion zone (3m) with barriers; Tool lanyards on all hand tools; Hard hat mandatory in work area', hierarchy:'Engineering / PPE', initL:2, initC:4, residL:1, residC:2 },
+      ]},
+      { num:3, title:'Perform isolation and test for dead', hazards:[
+        { desc:'Stored energy release (capacitor discharge)', type:'Physical', controls:'Permit to Work (PTW) required before commencing; Discharge verification sequence followed; Two-person rule enforced', hierarchy:'Elimination / Engineering', initL:3, initC:5, residL:1, residC:2 },
+        { desc:'Arc flash from adjacent live equipment', type:'Physical', controls:'Arc flash boundary established and barricaded; Arc flash PPE maintained until zone exited; No work within 300mm of live busbars without additional isolation', hierarchy:'Engineering / PPE', initL:3, initC:5, residL:2, residC:3 },
+      ]},
+    ]
+  },
+  { id:'swms-002', code:'NH-HSE-SWS-007',
+    title:'Working at Heights — Level 3 Facade Installation',
+    project:'north-harbour', state:'WA',
+    legislation:'Work Health and Safety Act 2020 (WA) + WHS Regulations 2022',
+    hrcw:['Work at height (>2m)', 'Use of EWP'],
+    version:1, versionLabel:'v1.0', status:'awaiting-approval',
+    createdBy:"Tom O'Brien", approvedBy:null,
+    approvedAt:null, nextReview:'30 Jun 2026',
+    permitRequired:'Not Required',
+    scopeOfWorks:"Installation of facade cladding panels on Level 3 of Building A using a scissor-lift EWP (max height 8.5m). Pre-start EWP inspection required. All workers to hold current EWP licence or be directly supervised.",
+    workers:{ assigned:6, signed:0 },
+    ppeRequired:['hardhat','glasses','hivs','boots','harness','lanyard'],
+    approvalChain:[
+      { name:"Tom O'Brien", role:'Site Supervisor', status:'approved', time:'06:45am' },
+      { name:'Sarah Kim',   role:'Safety Manager',  status:'awaiting', time:null },
+    ],
+    signedWorkers:[],
+    steps:[
+      { num:1, title:'Set up EWP and establish exclusion zone', hazards:[
+        { desc:'EWP overturn on uneven or soft ground', type:'Physical', controls:'Ground condition check before positioning; Ground protection boards laid; Outriggers deployed and verified; Competent EWP operator only (licence sighted on file)', hierarchy:'Engineering', initL:3, initC:5, residL:1, residC:3 },
+        { desc:'Struck by EWP during manoeuvring', type:'Physical', controls:'Dedicated spotter required; Exclusion zone 3m radius during all movement; Banksman hand signals used; Pedestrian barriers in place', hierarchy:'Admin / PPE', initL:3, initC:4, residL:1, residC:2 },
+      ]},
+      { num:2, title:'Work at height — facade panel installation', hazards:[
+        { desc:'Fall from EWP basket', type:'Physical', controls:'Full body harness + 2-point anchor to EWP basket anchor points; 3-point contact during basket entry/exit; No leaning outside basket rails at any time', hierarchy:'Engineering / PPE', initL:2, initC:5, residL:1, residC:2 },
+        { desc:'Dropped tools or cladding panels onto persons below', type:'Physical', controls:'Hard barricade below entire work zone; Tool lanyards on all hand tools; Hard hats mandatory for everyone within fall zone', hierarchy:'Engineering / PPE', initL:3, initC:3, residL:1, residC:2 },
+      ]},
+    ]
+  },
+  { id:'swms-003', code:'FRE-HSE-SWS-001',
+    title:'Demolition — Internal Walls, Level 2',
+    project:'fremantle', state:'WA',
+    legislation:'Work Health and Safety Act 2020 (WA) + WHS Regulations 2022',
+    hrcw:['Demolition of structure', 'Asbestos (potential)'],
+    version:1, versionLabel:'v1.0 (Draft)', status:'draft',
+    createdBy:'Marcus Webb', approvedBy:null,
+    approvedAt:null, nextReview:null,
+    permitRequired:'Not yet determined',
+    scopeOfWorks:'Selective demolition of non-load-bearing internal partition walls on Level 2 to enable open-plan fitout. Pre-demolition asbestos clearance survey completed — NIL asbestos detected in work zone.',
+    workers:{ assigned:0, signed:0 },
+    ppeRequired:['hardhat','glasses','hivs','boots','gloves','respirator','hearing'],
+    approvalChain:[],
+    signedWorkers:[],
+    steps:[],
   },
 ];
 
@@ -633,7 +736,7 @@ const WORKERS = [
 ];
 
 // ── State ────────────────────────────────────────────────────
-let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showDemoPanel: false, showProcureProModal: false, phase: 1, featureFlags: { procureproSchedule: false, workerPassport: false }, passportView: 'dashboard', passportWorker: null, passportVerifyStep: 0, passportVerifyWorker: null, passportInductionStep: 0 };
+let S = { mode: 'sc', view: 'home', activeDrawing: 0, project: null, inProject: false, showProjectDrop: false, projectTab: 'overview', dwgTab: 'details', dwgView: 'register', activeMarkup: null, activeTool: 'select', progStep: null, progSource: null, progTopTab: 'schedule', progSubTab: 'master', ganttView: 'week', ganttFilter: 'all', ganttCollapsed: {}, ganttExpanded: null, jobsView: 'grid', jobsExpanded: {}, showDemoPanel: false, showProcureProModal: false, phase: 1, featureFlags: { procureproSchedule: false, workerPassport: false }, passportView: 'dashboard', passportWorker: null, passportVerifyStep: 0, passportVerifyWorker: null, passportInductionStep: 0, swmsView: 'register', swmsDoc: null, swmsTab: 'document', swmsKioskCount: 0 };
 
 // Set phase (does not affect feature flags)
 function setPhase(n) {
@@ -3511,6 +3614,7 @@ function view() {
     case 'con-project':  return vConProject();
     case 'con-drawings':   return vConDrawings();
     case 'con-programme':  return vConProgramme();
+    case 'con-swms':     return vConSWMS();
     case 'con-passport':   return vConPassport();
     case 'settings':     return vGeneric('Settings');
     case 'ai':           return vGeneric('SafetyCulture AI');
@@ -3681,6 +3785,411 @@ function procureProModal() {
         </div>
       </div>
 
+    </div>
+  </div>`;
+}
+
+// ── SWMS & HRCW View ─────────────────────────────────────────
+function vConSWMS() {
+
+  function riskBand(l,c) {
+    const s = l*c;
+    if (s>=20) return {score:s, band:'EXTREME', col:'#dc2626', bg:'rgba(220,38,38,.12)'};
+    if (s>=13) return {score:s, band:'HIGH',    col:'#f59e0b', bg:'rgba(245,158,11,.12)'};
+    if (s>=5)  return {score:s, band:'MED',     col:'#ca8a04', bg:'rgba(202,138,4,.10)'};
+    return           {score:s, band:'LOW',     col:'#16a34a', bg:'rgba(22,163,74,.08)'};
+  }
+
+  const statusCfg = {
+    'approved':          { label:'✓ Approved',           col:'#16a34a', bg:'rgba(22,163,74,.1)'    },
+    'awaiting-approval': { label:'⏳ Awaiting Approval',  col:'#d97706', bg:'rgba(217,119,6,.1)'    },
+    'draft':             { label:'◯ Draft',               col:'#6b7280', bg:'rgba(107,114,128,.1)'  },
+    'expired':           { label:'✕ Expired',             col:'#dc2626', bg:'rgba(220,38,38,.1)'    },
+  };
+
+  // ── Kiosk Sign-On ─────────────────────────────────────────
+  if (S.swmsView === 'sign-on') {
+    const doc = SWMS_DOCS.find(d => d.id === S.swmsDoc);
+    if (!doc) { S = {...S, swmsView:'register'}; return vConSWMS(); }
+    const kioskCount = S.swmsKioskCount || 0;
+    const totalSigned = doc.workers.signed + kioskCount;
+    const remaining = doc.workers.assigned - totalSigned;
+    const isDone = remaining <= 0;
+    const kioskNames = ['Jake T.','Liam R.','Marcus J.','Tom O.','Wei L.','Aiden C.','Raj P.','Brett H.'];
+    const kioskRoles = ['Electrician','Electrician','Electrical Observer','Electrician','Electrician','Crane Operator','Site Supervisor','Safety Officer'];
+    const currentName = kioskNames[kioskCount] || 'Worker';
+    const currentRole = kioskRoles[kioskCount] || 'Electrician';
+    const allSigned = doc.signedWorkers.map(w=>w.name.split(' ')[0]).concat(kioskNames.slice(0,kioskCount));
+
+    if (isDone) {
+      return `
+      <div class="page-wrap" style="background:#1F2533;min-height:100%;display:flex;align-items:center;justify-content:center">
+        <div style="text-align:center;padding:48px 40px;max-width:520px">
+          <div style="font-size:60px;margin-bottom:16px">✅</div>
+          <div style="font-size:28px;font-weight:800;color:white;margin-bottom:8px">Crew Signed On.</div>
+          <div style="font-size:16px;color:rgba(255,255,255,.5);margin-bottom:4px">All ${doc.workers.assigned} workers have signed the SWMS.</div>
+          <div style="font-size:14px;color:#6559FF;font-weight:700;margin-bottom:32px">Work may commence — HRCW is compliant.</div>
+          <div style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:32px">
+            ${allSigned.map(n=>`<div style="background:rgba(22,163,74,.2);border:1px solid rgba(22,163,74,.3);border-radius:8px;padding:7px 14px;font-size:12px;color:#4ade80;font-weight:600">✓ ${n}</div>`).join('')}
+          </div>
+          <button data-swms-nav="detail" style="background:#6559FF;color:white;border:none;border-radius:12px;padding:13px 32px;font-size:14px;font-weight:700;cursor:pointer">Done — View SWMS Record</button>
+        </div>
+      </div>`;
+    }
+
+    return `
+    <div class="page-wrap" style="background:#1F2533;min-height:100%">
+      <div style="max-width:480px;margin:0 auto;padding:24px 20px">
+
+        <!-- SWMS identity bar -->
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:14px;padding:15px 18px;margin-bottom:18px;text-align:center">
+          <div style="font-size:9px;font-weight:700;color:rgba(255,255,255,.4);text-transform:uppercase;letter-spacing:.1em;margin-bottom:4px">Sign On To SWMS</div>
+          <div style="font-size:14px;font-weight:700;color:white;line-height:1.35">${doc.title}</div>
+          <div style="display:flex;align-items:center;justify-content:center;gap:10px;margin-top:8px">
+            <span style="font-size:11px;background:rgba(22,163,74,.25);color:#4ade80;padding:3px 10px;border-radius:6px;font-weight:700">✓ Approved</span>
+            <span style="font-size:11px;color:rgba(255,255,255,.35)">${doc.versionLabel}</span>
+          </div>
+        </div>
+
+        <!-- Worker form -->
+        <div style="background:white;border-radius:16px;overflow:hidden;margin-bottom:14px">
+          <div style="background:#f1f5f9;padding:11px 16px;border-bottom:1px solid #e5e7eb;display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em">Worker ${totalSigned+1} of ${doc.workers.assigned}</div>
+            <div style="font-size:11px;color:var(--text-4)">${remaining-1} more after this</div>
+          </div>
+          <div style="padding:16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:14px">
+              <div>
+                <label style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Name</label>
+                <input value="${currentName}" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--text)"/>
+              </div>
+              <div>
+                <label style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Role / Trade</label>
+                <input value="${currentRole}" style="width:100%;border:1.5px solid var(--border);border-radius:8px;padding:10px 12px;font-size:14px;font-weight:600;color:var(--text)"/>
+              </div>
+            </div>
+
+            <!-- 4 declarations (from real SWMS documents) -->
+            <div style="background:#f8f9fb;border-radius:10px;padding:12px 14px;margin-bottom:14px">
+              <div style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px">Confirm before signing:</div>
+              ${['I have been consulted on this SWMS','I have read and understood the control measures','I have or will obtain all required PPE','I hold the required licences and training for this work'].map((d,i)=>`
+              <label style="display:flex;align-items:center;gap:10px;font-size:13px;color:var(--text-2);padding:6px 0;cursor:pointer;${i<3?'border-bottom:1px solid #e5e7eb;':''}">
+                <input type="checkbox" checked style="width:16px;height:16px;accent-color:#6559FF;flex-shrink:0"/>
+                ${d}
+              </label>`).join('')}
+            </div>
+
+            <!-- Signature -->
+            <div>
+              <label style="font-size:10px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.05em;display:block;margin-bottom:5px">Signature — tap to sign</label>
+              <div style="border:2px dashed #d1d5db;border-radius:10px;height:72px;background:#fafafa;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-size:22px;color:#374151;font-style:italic;cursor:pointer">${currentName.split(' ')[0]}</div>
+            </div>
+          </div>
+
+          <!-- Buttons -->
+          <div style="padding:14px 16px;background:#f8f9fb;border-top:1px solid #e5e7eb;display:flex;gap:10px">
+            <button id="kiosk-sign-btn" style="flex:2;background:#16a34a;color:white;border:none;border-radius:10px;padding:13px;font-size:14px;font-weight:700;cursor:pointer">✓ Confirm & Sign On</button>
+            <button data-swms-nav="detail" style="flex:1;background:white;border:1.5px solid var(--border);border-radius:10px;padding:13px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-3)">Exit</button>
+          </div>
+        </div>
+
+        <!-- Live counter -->
+        <div style="background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:12px;padding:14px 18px;text-align:center">
+          <div style="font-size:11px;color:rgba(255,255,255,.4);margin-bottom:6px;font-weight:600;text-transform:uppercase;letter-spacing:.05em">Signed on</div>
+          <div style="font-size:30px;font-weight:800;color:white">${totalSigned} <span style="font-size:18px;font-weight:500;color:rgba(255,255,255,.35)">of ${doc.workers.assigned}</span></div>
+          ${allSigned.length > 0 ? `<div style="font-size:11px;color:rgba(255,255,255,.35);margin-top:5px">${allSigned.join(', ')}</div>` : ''}
+        </div>
+      </div>
+    </div>`;
+  }
+
+  // ── Detail view ────────────────────────────────────────────
+  if (S.swmsView === 'detail' && S.swmsDoc) {
+    const doc = SWMS_DOCS.find(d => d.id === S.swmsDoc);
+    if (!doc) { S = {...S, swmsView:'register'}; return vConSWMS(); }
+    const sc = statusCfg[doc.status] || statusCfg['draft'];
+    const tab = S.swmsTab || 'document';
+    const signedCount = doc.workers.signed + (S.swmsKioskCount||0);
+    const tabs = [
+      {id:'document', label:'Document'},
+      {id:'sign-on',  label:`Sign-On (${signedCount}/${doc.workers.assigned})`},
+      {id:'approval', label:'Approval Chain'},
+      {id:'audit',    label:'Audit Trail'},
+    ];
+
+    return `
+    <div class="page-wrap" style="background:#f3f4f6;min-height:100%">
+
+      <!-- Detail header -->
+      <div style="background:white;border-bottom:1px solid var(--border);padding:16px 24px">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px">
+          <button data-swms-nav="register" style="background:#f3f4f6;border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-2)">← SWMS Register</button>
+          <span style="font-size:11px;color:var(--text-4)">/ ${doc.code}</span>
+          <div style="margin-left:auto;display:flex;gap:8px">
+            <button style="background:white;border:1.5px solid var(--border);border-radius:8px;padding:7px 14px;font-size:12px;font-weight:600;cursor:pointer;color:var(--text-2)">Export PDF</button>
+            ${doc.status === 'approved' ? `<button data-swms-nav="sign-on" style="background:#16a34a;color:white;border:none;border-radius:8px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer">📋 Start Pre-Start Briefing</button>` : ''}
+            ${doc.status === 'draft' ? `<button style="background:#6559FF;color:white;border:none;border-radius:8px;padding:7px 18px;font-size:12px;font-weight:700;cursor:pointer">Submit for Approval →</button>` : ''}
+          </div>
+        </div>
+        <div style="display:flex;align-items:start;gap:16px;margin-bottom:12px">
+          <div>
+            <div style="font-size:18px;font-weight:800;color:var(--text);margin-bottom:6px">${doc.title}</div>
+            <div style="display:flex;flex-wrap:wrap;gap:6px;align-items:center">
+              <span style="background:${sc.bg};color:${sc.col};font-size:12px;font-weight:700;padding:4px 10px;border-radius:7px">${sc.label}</span>
+              <span style="font-size:12px;color:var(--text-3);background:#f3f4f6;padding:3px 9px;border-radius:6px">${doc.versionLabel}</span>
+              <span style="font-size:12px;color:var(--text-3)">📌 ${doc.state}</span>
+              ${doc.hrcw.map(h=>`<span style="background:rgba(220,38,38,.08);color:#dc2626;font-size:11px;font-weight:700;padding:2px 8px;border-radius:5px">⚠ ${h}</span>`).join('')}
+            </div>
+          </div>
+        </div>
+        <!-- Tabs -->
+        <div style="display:flex;gap:0;border-bottom:2px solid #f3f4f6;margin-bottom:-2px">
+          ${tabs.map(t=>`<button data-swms-tab="${t.id}" style="padding:9px 16px;font-size:13px;font-weight:${tab===t.id?'700':'500'};color:${tab===t.id?'#6559FF':'var(--text-3)'};background:none;border:none;border-bottom:2px solid ${tab===t.id?'#6559FF':'transparent'};cursor:pointer;margin-bottom:-2px">${t.label}</button>`).join('')}
+        </div>
+      </div>
+
+      ${tab === 'document' ? `
+      <!-- Document tab: metadata + PPE left, hazard table right -->
+      <div style="padding:20px 24px;display:grid;grid-template-columns:270px 1fr;gap:18px;align-items:start">
+
+        <!-- Left column -->
+        <div style="display:flex;flex-direction:column;gap:14px">
+          <!-- Doc metadata -->
+          <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:11px">Document Details</div>
+            ${[['Code',doc.code],['Version',doc.versionLabel],['State / Jurisdiction',doc.state],['Permit Required',doc.permitRequired],['Created by',doc.createdBy],['Approved by',doc.approvedBy||'—'],['Approved at',doc.approvedAt||'—'],['Next review',doc.nextReview||'—']].map(([k,v])=>`
+            <div style="display:flex;justify-content:space-between;padding:5px 0;border-bottom:1px solid #f3f4f6;font-size:12px">
+              <span style="color:var(--text-3)">${k}</span><span style="color:var(--text-2);font-weight:600;text-align:right;max-width:55%">${v}</span>
+            </div>`).join('')}
+          </div>
+          <!-- Scope -->
+          <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:8px">Scope of Works</div>
+            <div style="font-size:12px;color:var(--text-2);line-height:1.65">${doc.scopeOfWorks}</div>
+          </div>
+          <!-- PPE grid -->
+          <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:16px">
+            <div style="font-size:12px;font-weight:700;color:var(--text);margin-bottom:12px">Required PPE</div>
+            <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:5px">
+              ${PPE_ITEMS.map(p=>{const req=doc.ppeRequired.includes(p.id);return `<div style="background:${req?'rgba(101,89,255,.08)':'#f8f9fb'};border:1.5px solid ${req?'rgba(101,89,255,.2)':'#f0f0f0'};border-radius:8px;padding:7px 3px;text-align:center;${req?'':'opacity:.3'}"><div style="font-size:18px;margin-bottom:2px">${p.emoji}</div><div style="font-size:8px;font-weight:${req?'700':'400'};color:${req?'#6559FF':'var(--text-4)'};line-height:1.2">${p.label}</div></div>`;}).join('')}
+            </div>
+          </div>
+        </div>
+
+        <!-- Right: Hazard/Control table — THE key visual -->
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden">
+          <div style="padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+            <div style="font-size:13px;font-weight:700;color:var(--text)">Hazard Identification & Risk Control</div>
+            <div style="display:flex;gap:5px">
+              ${[['LOW','#16a34a'],['MED','#ca8a04'],['HIGH','#f59e0b'],['EXTREME','#dc2626']].map(([l,c])=>`<span style="background:${c}18;color:${c};font-size:9px;font-weight:800;padding:2px 7px;border-radius:4px">${l}</span>`).join('')}
+            </div>
+          </div>
+          <!-- Col headers -->
+          <div style="display:grid;grid-template-columns:28px 170px 1fr 90px 72px 72px;background:#f8f9fb;border-bottom:1px solid var(--border)">
+            ${['#','Job Step / Hazard','Control Measures','Hierarchy','Init Risk','Resid Risk'].map(h=>`<div style="padding:8px 10px;font-size:9px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">${h}</div>`).join('')}
+          </div>
+          <!-- Rows -->
+          ${doc.steps.map(step=>`
+          <div style="display:grid;grid-template-columns:28px 170px 1fr 90px 72px 72px;background:#eef2f7;border-bottom:1px solid #dde3ee">
+            <div style="padding:10px 10px;font-size:12px;font-weight:800;color:#1F2533">${step.num}</div>
+            <div style="padding:10px 10px;font-size:12px;font-weight:700;color:#1F2533;grid-column:2/-1;display:flex;align-items:center;gap:8px">
+              ${step.title}
+            </div>
+          </div>
+          ${step.hazards.map((h,hi)=>{
+            const init=riskBand(h.initL,h.initC); const resid=riskBand(h.residL,h.residC);
+            return `<div style="display:grid;grid-template-columns:28px 170px 1fr 90px 72px 72px;border-bottom:1px solid #f3f4f6;${hi%2===0?'':'background:#fafafa'}">
+              <div></div>
+              <div style="padding:10px 10px">
+                <div style="font-size:12px;font-weight:600;color:var(--text-2);line-height:1.4">${h.desc}</div>
+                <div style="font-size:10px;color:var(--text-4);margin-top:2px">${h.type}${h.siteAdd?' · <span style="color:#d97706;font-weight:700">⚑ Site Addition</span>':''}</div>
+              </div>
+              <div style="padding:10px 10px;font-size:11px;color:var(--text-2);line-height:1.55">${h.controls}</div>
+              <div style="padding:10px 10px;font-size:10px;color:var(--text-3);line-height:1.5">${h.hierarchy}</div>
+              <div style="padding:10px 8px">
+                <div style="background:${init.bg};color:${init.col};font-size:9px;font-weight:800;padding:3px 5px;border-radius:4px;text-align:center;margin-bottom:2px">${init.band}</div>
+                <div style="font-size:9px;color:var(--text-4);text-align:center">${h.initL}×${h.initC}=${init.score}</div>
+              </div>
+              <div style="padding:10px 8px">
+                <div style="background:${resid.bg};color:${resid.col};font-size:9px;font-weight:800;padding:3px 5px;border-radius:4px;text-align:center;margin-bottom:2px">${resid.band}</div>
+                <div style="font-size:9px;color:var(--text-4);text-align:center">${h.residL}×${h.residC}=${resid.score}</div>
+              </div>
+            </div>`;
+          }).join('')}`).join('')}
+          ${doc.steps.length===0?`<div style="padding:40px;text-align:center;color:var(--text-4);font-size:13px">No job steps yet. Click Edit to build the hazard table.</div>`:''}
+          <div style="padding:12px 16px;border-top:1px solid var(--border);background:#f8f9fb">
+            <button style="background:none;border:1.5px dashed var(--border);border-radius:8px;padding:8px 16px;font-size:12px;color:#6559FF;font-weight:600;cursor:pointer;width:100%">+ Add Job Step</button>
+          </div>
+        </div>
+      </div>
+
+      ` : tab === 'sign-on' ? `
+      <!-- Sign-On tab -->
+      <div style="padding:20px 24px;max-width:860px">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-bottom:20px">
+          ${[['Workers Signed',signedCount,'#6559FF'],['Unsigned',doc.workers.assigned-signedCount,'#d97706'],['Total Assigned',doc.workers.assigned,'var(--text)']].map(([l,v,c])=>`
+          <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:16px;text-align:center">
+            <div style="font-size:32px;font-weight:800;color:${c}">${v}</div>
+            <div style="font-size:12px;color:var(--text-3);margin-top:2px">${l}</div>
+          </div>`).join('')}
+        </div>
+
+        ${doc.status === 'approved' ? `
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;padding:18px;margin-bottom:16px">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px">
+            <div>
+              <div style="font-size:14px;font-weight:700;color:var(--text)">Pre-Start Briefing — Kiosk Mode</div>
+              <div style="font-size:12px;color:var(--text-3);margin-top:2px">Pass the device around the crew. Each worker enters their name, ticks 4 declarations, and signs. No login needed.</div>
+            </div>
+            <button data-swms-nav="sign-on" style="background:#16a34a;color:white;border:none;border-radius:10px;padding:10px 20px;font-size:13px;font-weight:700;cursor:pointer;white-space:nowrap;margin-left:16px">📋 Start Sign-On Session</button>
+          </div>
+          <div style="background:#f0fdf4;border:1px solid #bbf7d0;border-radius:8px;padding:10px 14px;font-size:12px;color:#166534">⚡ HRCW Work — All workers must sign before commencing. Safety Manager approval confirmed.</div>
+        </div>` : `
+        <div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:14px 18px;margin-bottom:16px">
+          <div style="font-size:13px;color:#d97706;font-weight:600">⚠ SWMS must be approved before workers can sign on.</div>
+        </div>`}
+
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden">
+          <div style="padding:13px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--text)">Signed Workers</div>
+          ${doc.signedWorkers.length === 0 && (S.swmsKioskCount||0) === 0 ? `<div style="padding:32px;text-align:center;color:var(--text-4);font-size:13px">No workers have signed yet.</div>` :
+          doc.signedWorkers.concat(['Jake T.','Liam R.','Marcus J.'].slice(0,S.swmsKioskCount||0).map((n,i)=>({name:n,role:['Electrician','Electrician','Electrical Observer'][i],time:['07:33am','07:34am','07:35am'][i]||'07:36am',method:'Kiosk'}))).map(w=>`
+          <div style="padding:12px 18px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:12px">
+            <div style="width:34px;height:34px;border-radius:10px;background:#16a34a;display:flex;align-items:center;justify-content:center;font-size:12px;font-weight:800;color:white;flex-shrink:0">${w.name.split(' ').map(n=>n[0]).join('').slice(0,2)}</div>
+            <div style="flex:1"><div style="font-size:13px;font-weight:600;color:var(--text)">${w.name}</div><div style="font-size:11px;color:var(--text-3)">${w.role} · ${w.method}</div></div>
+            <div style="font-size:12px;color:var(--text-3)">${w.time}</div>
+            <span style="font-size:11px;background:rgba(22,163,74,.1);color:#16a34a;padding:2px 8px;border-radius:5px;font-weight:700">✓ Signed ${doc.versionLabel}</span>
+          </div>`).join('')}
+        </div>
+      </div>
+
+      ` : tab === 'approval' ? `
+      <!-- Approval tab -->
+      <div style="padding:20px 24px;max-width:680px">
+        ${doc.status === 'approved' ? `<div style="background:#f0fdf4;border:1.5px solid #bbf7d0;border-radius:12px;padding:13px 18px;margin-bottom:18px;display:flex;align-items:center;gap:10px"><span style="font-size:20px">✅</span><div style="font-size:13px;font-weight:600;color:#16a34a">All approvers signed off — ${doc.approvedAt}. Workers may sign on.</div></div>` : `<div style="background:#fffbeb;border:1.5px solid #fde68a;border-radius:12px;padding:13px 18px;margin-bottom:18px">
+          <div style="font-size:13px;font-weight:700;color:#d97706;margin-bottom:4px">⏳ Awaiting Concurrent Approvals</div>
+          <div style="font-size:12px;color:#d97706">All approvers notified simultaneously — no sequential wait. Residual Risk = HIGH flagged on Step 2 — Safety Manager approval required before sign-on can begin.</div>
+        </div>`}
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden">
+          <div style="padding:13px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--text)">Approval Chain — Concurrent (not sequential)</div>
+          ${doc.approvalChain.map((a,i)=>`
+          <div style="padding:16px 18px;border-bottom:1px solid #f3f4f6;display:flex;align-items:center;gap:14px">
+            <div style="width:30px;height:30px;border-radius:50%;background:${a.status==='approved'?'#16a34a':a.status==='awaiting'?'#d97706':'#e5e7eb'};display:flex;align-items:center;justify-content:center;font-size:13px;color:white;font-weight:800;flex-shrink:0">${i+1}</div>
+            <div style="flex:1">
+              <div style="font-size:13px;font-weight:600;color:var(--text)">${a.name}</div>
+              <div style="font-size:11px;color:var(--text-3)">${a.role}</div>
+            </div>
+            <div style="text-align:right">
+              ${a.status==='approved'?`<div style="font-size:12px;font-weight:700;color:#16a34a">✓ Approved</div><div style="font-size:11px;color:var(--text-4)">${a.time}</div>`:a.status==='awaiting'?`<div style="font-size:12px;font-weight:700;color:#d97706">⏳ Awaiting Review</div><div style="font-size:11px;color:var(--text-4)">Push notification sent</div>`:`<div style="font-size:12px;color:var(--text-4)">Pending</div>`}
+            </div>
+          </div>`).join('')}
+          ${doc.approvalChain.length===0?`<div style="padding:32px;text-align:center;color:var(--text-4);font-size:13px">Submit SWMS to trigger approval chain.</div>`:''}
+        </div>
+      </div>
+
+      ` : `
+      <!-- Audit Trail tab -->
+      <div style="padding:20px 24px;max-width:720px">
+        <div style="background:white;border:1.5px solid var(--border);border-radius:12px;overflow:hidden">
+          <div style="padding:13px 18px;border-bottom:1px solid var(--border);font-size:13px;font-weight:700;color:var(--text)">Audit Trail — Full version history</div>
+          ${[
+            {t:'07:45am',u:'M. Sims (Client)',   a:'Approved SWMS v3.1 — all controls acceptable for site',                              icon:'✓',col:'#16a34a'},
+            {t:'07:31am',u:'Sarah Kim',           a:'Safety Manager approved — residual risk within acceptable threshold after controls',  icon:'✓',col:'#16a34a'},
+            {t:'07:22am',u:'Brett Harrison',      a:'Site Supervisor approved. Submitted to approval chain for concurrent review.',       icon:'✓',col:'#16a34a'},
+            {t:'07:14am',u:'Brett Harrison',      a:'Added 2 site-specific hazard rows (wet floor condition from last night\'s rain). Version → v3.1.',icon:'✎',col:'#6559FF'},
+            {t:'07:01am',u:'✦ AI Engine',         a:'2 hazards suggested: induced voltage risk + slippery approach path. Both reviewed and accepted by Brett H.',icon:'✦',col:'#8b5cf6'},
+            {t:'07:00am',u:'✦ AI Engine',         a:'SWMS v3 auto-matched to today\'s schedule — Electrical Isolation, Switchboard B4. 8 workers checked: all White Cards current, 7/8 Electrical Licences valid.',icon:'✦',col:'#8b5cf6'},
+            {t:'26 May', u:'Brett Harrison',      a:'Previous version v3.0 created. Based on master template: Electrical Isolation Rev 3.',icon:'◯',col:'var(--text-3)'},
+          ].map(e=>`
+          <div style="padding:12px 18px;border-bottom:1px solid #f3f4f6;display:flex;align-items:start;gap:12px">
+            <div style="width:26px;height:26px;border-radius:50%;background:${e.col}18;display:flex;align-items:center;justify-content:center;font-size:11px;color:${e.col};flex-shrink:0;margin-top:1px">${e.icon}</div>
+            <div style="flex:1">
+              <div style="font-size:13px;color:var(--text-2);line-height:1.4">${e.a}</div>
+              <div style="font-size:11px;color:var(--text-4);margin-top:3px">${e.u} · ${e.t} · 27 May 2026</div>
+            </div>
+          </div>`).join('')}
+        </div>
+      </div>`}
+    </div>`;
+  }
+
+  // ── Register view (default) ────────────────────────────────
+  const total    = SWMS_DOCS.length;
+  const approved = SWMS_DOCS.filter(d=>d.status==='approved').length;
+  const awaiting = SWMS_DOCS.filter(d=>d.status==='awaiting-approval').length;
+  const draft    = SWMS_DOCS.filter(d=>d.status==='draft').length;
+
+  return `
+  <div class="page-wrap">
+    <div style="padding:24px 28px 0;display:flex;align-items:center;justify-content:space-between">
+      <div>
+        <div style="font-size:22px;font-weight:800;color:var(--text);display:flex;align-items:center;gap:10px">
+          🦺 SWMS & HRCW
+          <span style="font-size:11px;font-weight:700;background:#0ea5e918;color:#0ea5e9;padding:3px 10px;border-radius:7px">Phase 2</span>
+        </div>
+        <div style="font-size:13px;color:var(--text-3);margin-top:3px">Safe Work Method Statements — create, approve, brief, and sign-on. Replaces paper and HammerTech.</div>
+      </div>
+      <div style="display:flex;gap:10px">
+        <button style="background:white;border:1.5px solid var(--border);border-radius:10px;padding:9px 16px;font-size:13px;font-weight:600;cursor:pointer;color:var(--text-2)">Template Library</button>
+        <button style="background:#6559FF;color:white;border:none;border-radius:10px;padding:9px 18px;font-size:13px;font-weight:700;cursor:pointer">+ New SWMS</button>
+      </div>
+    </div>
+
+    <!-- Stats -->
+    <div style="padding:20px 28px;display:grid;grid-template-columns:repeat(4,1fr);gap:14px">
+      ${[{l:'Total SWMS',v:total,col:'#6559FF',bg:'rgba(101,89,255,.08)',i:'📄'},{l:'Approved',v:approved,col:'#16a34a',bg:'rgba(22,163,74,.08)',i:'✓'},{l:'Awaiting Approval',v:awaiting,col:'#d97706',bg:'rgba(217,119,6,.09)',i:'⏳'},{l:'Draft',v:draft,col:'#6b7280',bg:'rgba(107,114,128,.08)',i:'◯'}].map(s=>`
+      <div style="background:${s.bg};border:1.5px solid ${s.col}22;border-radius:14px;padding:16px 18px">
+        <div style="font-size:11px;font-weight:700;color:${s.col};text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">${s.i} ${s.l}</div>
+        <div style="font-size:32px;font-weight:800;color:${s.col}">${s.v}</div>
+      </div>`).join('')}
+    </div>
+
+    <!-- Proactive alert (AI has done the work) -->
+    <div style="margin:0 28px 16px;background:#fef2f2;border:1.5px solid #fecaca;border-radius:12px;padding:14px 18px;display:flex;align-items:center;gap:12px">
+      <span style="font-size:22px">⚡</span>
+      <div style="flex:1">
+        <div style="font-size:13px;font-weight:700;color:#dc2626">HIGH RISK WORK TODAY — Electrical Isolation, Switchboard B4 is scheduled for 07:00am</div>
+        <div style="font-size:12px;color:#dc2626;margin-top:2px">5 of 8 assigned workers have not yet signed on to SWMS v3.1. AI has flagged 2 new hazards based on last night's weather.</div>
+      </div>
+      <button data-swms-open="swms-001" style="background:#dc2626;color:white;border:none;border-radius:8px;padding:8px 16px;font-size:12px;font-weight:700;cursor:pointer;white-space:nowrap">Open SWMS →</button>
+    </div>
+
+    <!-- SWMS table -->
+    <div style="margin:0 28px 28px;background:white;border:1.5px solid var(--border);border-radius:14px;overflow:hidden">
+      <div style="padding:14px 20px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between">
+        <div style="font-size:14px;font-weight:700;color:var(--text)">All SWMS — ${total} documents</div>
+        <div style="display:flex;gap:8px">
+          <div style="border:1.5px solid var(--border);border-radius:8px;padding:6px 12px;font-size:12px;color:var(--text-3);background:#fafafa;display:flex;align-items:center;gap:6px;cursor:pointer">${I.filter} Filter by HRCW</div>
+        </div>
+      </div>
+      <table style="width:100%;border-collapse:collapse">
+        <thead><tr style="background:#f8f9fb">
+          ${['Document','HRCW Category','Project','Status','Workers','Review Due','Actions'].map(h=>`<th style="padding:10px ${h==='Document'?'20':'14'}px;text-align:left;font-size:11px;font-weight:700;color:var(--text-3);text-transform:uppercase;letter-spacing:.04em">${h}</th>`).join('')}
+        </tr></thead>
+        <tbody>
+          ${SWMS_DOCS.map((d,i)=>{
+            const sc=statusCfg[d.status]||statusCfg['draft'];
+            const proj=PROJECTS.find(p=>p.id===d.project);
+            const sc2=d.workers.signed+(i===0?S.swmsKioskCount||0:0);
+            return `<tr style="border-top:1px solid var(--border);${i%2===0?'':'background:#fafafa'}" data-swms-open="${d.id}">
+              <td style="padding:13px 20px"><div style="font-size:13px;font-weight:600;color:var(--text)">${d.title}</div><div style="font-size:11px;color:var(--text-4);margin-top:1px">${d.code} · ${d.versionLabel}</div></td>
+              <td style="padding:13px 14px"><div style="display:flex;flex-direction:column;gap:3px">${d.hrcw.map(h=>`<span style="background:rgba(220,38,38,.08);color:#dc2626;font-size:10px;font-weight:700;padding:2px 6px;border-radius:4px">⚠ ${h}</span>`).join('')}</div></td>
+              <td style="padding:13px 14px;font-size:13px;color:var(--text-2)">${proj?proj.name:'—'}</td>
+              <td style="padding:13px 14px"><span style="background:${sc.bg};color:${sc.col};font-size:11px;font-weight:700;padding:4px 10px;border-radius:7px">${sc.label}</span></td>
+              <td style="padding:13px 14px">
+                <div style="font-size:13px;font-weight:600;color:${sc2===d.workers.assigned&&d.workers.assigned>0?'#16a34a':sc2>0?'#d97706':'var(--text-2)'}">${sc2}/${d.workers.assigned}</div>
+                <div style="font-size:10px;color:var(--text-4)">${sc2===d.workers.assigned&&d.workers.assigned>0?'All signed':sc2>0?'Partially signed':'Not signed'}</div>
+              </td>
+              <td style="padding:13px 14px;font-size:12px;color:var(--text-2)">${d.nextReview||'—'}</td>
+              <td style="padding:13px 14px">
+                <div style="display:flex;gap:8px">
+                  <button data-swms-open="${d.id}" style="font-size:12px;color:#6559FF;font-weight:600;background:none;border:none;cursor:pointer">View</button>
+                  ${d.status==='approved'?`<button data-swms-open="${d.id}" data-swms-direct-signon style="font-size:12px;color:#16a34a;font-weight:600;background:none;border:none;cursor:pointer">Sign-On</button>`:''}
+                </div>
+              </td>
+            </tr>`;
+          }).join('')}
+        </tbody>
+      </table>
     </div>
   </div>`;
 }
@@ -4243,7 +4752,7 @@ const PHASES = [
     name: 'Phase 2',
     sub: 'Integrations & AI',
     desc: 'Everything in Phase 1, plus third-party integrations, enhanced AI capabilities, and Digital Worker Passport.',
-    features: ['ProcurePro Schedule Input', 'Digital Worker Passport', 'Credential Wallet & QR Verify', 'Site Induction → Auto Passport'],
+    features: ['ProcurePro Schedule Input', 'Digital Worker Passport', 'SWMS & HRCW Register', 'Credential Wallet & QR Verify', 'Site Induction → Auto Passport'],
     col: '#0ea5e9',
     comingSoon: false,
   },
@@ -4347,6 +4856,9 @@ function render() {
         render();
       } else if (v === 'con-passport') {
         S = { ...S, view: 'con-passport', passportView: 'dashboard', passportWorker: null, passportVerifyStep: 0, passportVerifyWorker: null, passportInductionStep: 0 };
+        render();
+      } else if (v === 'con-swms') {
+        S = { ...S, view: 'con-swms', swmsView: 'register', swmsDoc: null, swmsTab: 'document', swmsKioskCount: 0 };
         render();
       } else {
         go(v);
@@ -4704,6 +5216,60 @@ function render() {
       }
     })
   );
+
+  // ── SWMS & HRCW event handlers ───────────────────────────────
+
+  // Open SWMS detail view
+  document.querySelectorAll('[data-swms-open]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const docId = el.dataset.swmsOpen;
+      const goSignOn = el.hasAttribute('data-swms-direct-signon');
+      S = { ...S, view: 'con-swms', swmsView: goSignOn ? 'sign-on' : 'detail', swmsDoc: docId, swmsTab: 'document', swmsKioskCount: 0 };
+      render();
+    })
+  );
+
+  // Navigate between SWMS sub-views (register / detail / sign-on)
+  document.querySelectorAll('[data-swms-nav]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      const nav = el.dataset.swmsNav;
+      if (nav === 'register') {
+        S = { ...S, swmsView: 'register', swmsDoc: null, swmsTab: 'document', swmsKioskCount: 0 };
+      } else if (nav === 'sign-on') {
+        S = { ...S, swmsView: 'sign-on', swmsKioskCount: 0 };
+      } else if (nav === 'detail') {
+        S = { ...S, swmsView: 'detail', swmsTab: S.swmsTab || 'document' };
+      } else {
+        S = { ...S, swmsView: nav };
+      }
+      render();
+    })
+  );
+
+  // Switch tabs within SWMS detail view
+  document.querySelectorAll('[data-swms-tab]').forEach(el =>
+    el.addEventListener('click', e => {
+      e.stopPropagation();
+      S = { ...S, swmsTab: el.dataset.swmsTab };
+      render();
+    })
+  );
+
+  // Kiosk sign-on button — increment signed count
+  const kioskBtn = document.getElementById('kiosk-sign-btn');
+  if (kioskBtn) {
+    kioskBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      const doc = SWMS_DOCS.find(d => d.id === S.swmsDoc);
+      const totalWorkers = doc ? doc.workers.length : 8;
+      if (S.swmsKioskCount < totalWorkers) {
+        S = { ...S, swmsKioskCount: S.swmsKioskCount + 1 };
+        render();
+      }
+    });
+  }
 }
 
 render();
