@@ -1063,19 +1063,29 @@
     </div>
     <div>
       <div class="vertical-list">
-        <div class="vertical-item">
-          <div class="vi-icon muted">🏭</div>
-          <div style="flex:1;"><div class="vi-name">Manufacturing</div></div>
-        </div>
-        <div class="vertical-item">
-          <div class="vi-icon muted">🍔</div>
-          <div style="flex:1;"><div class="vi-name">QSR</div></div>
-        </div>
-        <div class="vertical-item active">
-          <div class="vi-icon active">🏗️</div>
+        <!-- Manufacturing & QSR: Focus verticals -->
+        <div class="vertical-item active" style="background:#111827;border-color:#1f2937;">
+          <div class="vi-icon" style="background:var(--purple);">🏭</div>
           <div style="flex:1;">
-            <div class="vi-name">Construction</div>
-            <div class="vi-sub" style="color:rgba(255,255,255,0.55);">First vertical · building now</div>
+            <div class="vi-name" style="color:#fff;">Manufacturing</div>
+            <div class="vi-sub" style="color:rgba(255,255,255,0.5);">Focus vertical</div>
+          </div>
+          <span style="background:var(--purple);color:#fff;font-size:10px;font-weight:800;padding:2px 9px;border-radius:9px;letter-spacing:0.3px;">FOCUS</span>
+        </div>
+        <div class="vertical-item active" style="background:#111827;border-color:#1f2937;">
+          <div class="vi-icon" style="background:var(--purple);">🍔</div>
+          <div style="flex:1;">
+            <div class="vi-name" style="color:#fff;">QSR</div>
+            <div class="vi-sub" style="color:rgba(255,255,255,0.5);">Focus vertical</div>
+          </div>
+          <span style="background:var(--purple);color:#fff;font-size:10px;font-weight:800;padding:2px 9px;border-radius:9px;letter-spacing:0.3px;">FOCUS</span>
+        </div>
+        <!-- Construction: Phase 1, live — different highlight -->
+        <div class="vertical-item" style="background:#0c1a0c;border:1px solid rgba(34,197,94,0.4);">
+          <div class="vi-icon" style="background:rgba(34,197,94,0.2);">🏗️</div>
+          <div style="flex:1;">
+            <div class="vi-name" style="color:#4ade80;">Construction</div>
+            <div class="vi-sub" style="color:rgba(74,222,128,0.6);">Phase 1 · building now</div>
           </div>
           <span class="live-badge">LIVE</span>
         </div>
@@ -1092,7 +1102,7 @@
           <div style="flex:1;"><div class="vi-name">Transport &amp; logistics</div></div>
         </div>
       </div>
-      <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">Future verticals follow the same playbook</p>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">Each vertical follows the same playbook</p>
     </div>
   </div>
 
@@ -1343,11 +1353,6 @@
     <div class="callout-icon">📋</div>
     <div><strong>Next phase (after v1.0):</strong> Workers Passport (cross-site identity &amp; compliance record for workers across multiple contractors), Permits to Work, and Schedule Change Management are scoped for the phase following full platform delivery.</div>
   </div>
-  <div class="callout" style="background:#0f1f0a;border-color:var(--green);margin-bottom:24px;">
-    <div class="callout-icon">✅</div>
-    <div><strong style="color:var(--green);">Reinstated to scope:</strong> AI Schedule Intelligence (critical path analysis, weather overlays, at-risk flagging) and Mobile Field Experience — drawings on phone — are confirmed in scope and ship as part of the 6-month delivery plan.</div>
-  </div>
-
   <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;">Component Mockups — As Built in Prototype</h3>
 
   <!-- ─── COMPONENT 1 + 2: JOBS & PROJECTS ─── -->
@@ -2650,27 +2655,47 @@
     <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:4px;">What we need to go big</h2>
 
     <div class="ask-items">
+
       <div class="ask-item">
         <div class="ask-num">1</div>
         <div>
-          <div class="ask-title">Back the vertical strategy</div>
-          <div class="ask-body">Treat Mitti as the template for industry-specific go-to-market — the first of several verticals built on the platform we already have.</div>
+          <div class="ask-title">Lock the architecture decision — this week</div>
+          <div class="ask-body">Three options are on the table for how a Project maps to the SC data model: (a) 1 Project = 1 SC Site, (b) Project owns multiple Sites, (c) Project is a Group. This single decision determines every API call, permission model, and data structure across all 13 components. Engineering Director + Platform Architect need to review and decide in the next 5 business days. Nothing in Phase 1 can be scoped, designed, or coded until this is resolved.</div>
         </div>
       </div>
+
       <div class="ask-item">
         <div class="ask-num">2</div>
         <div>
-          <div class="ask-title">Unblock the architecture decision</div>
-          <div class="ask-body">Lock the project-to-group/site mapping in the next two weeks. It determines every API call — nothing ships until it's resolved.</div>
+          <div class="ask-title">Name the pilot customers and assign CSMs now</div>
+          <div class="ask-body">The v0.1 internal pilot (11 Jul) needs real accounts, not TBC. We need 3–5 named construction customers confirmed as pilot partners — ideally mid-market builders (20–500 employees) with active projects, drawings, and a site team that runs inspections daily. Focal Group (QLD commercial construction, 10+ active projects, 21 subcontractors, 8,438 site photos) is a natural fit and already uses SafetyCulture intensively. Each pilot account needs a named CSM before v0.1 ships. Without live users, we have no feedback loop to validate before v0.2.</div>
         </div>
       </div>
+
       <div class="ask-item">
         <div class="ask-num">3</div>
         <div>
-          <div class="ask-title">Line up pilot customers and GTM</div>
-          <div class="ask-body">Confirm pilot accounts and align sales on the in-app trial motion, so the 1,633 card-on-file accounts convert from day one.</div>
+          <div class="ask-title">Decide the commercial model before the trial launches</div>
+          <div class="ask-body">The M1 in-app trial needs a price point and conversion offer. Three questions need answers: (1) How is Construct priced — per seat, per project, or per feature module? (2) What does the trial include and for how long? (3) Is the conversion triggered automatically or via sales? The 1,633 card-on-file accounts can't be activated until we know what they're converting to. Commercial team needs to land this before v0.1 (11 Jul).</div>
         </div>
       </div>
+
+      <div class="ask-item">
+        <div class="ask-num">4</div>
+        <div>
+          <div class="ask-title">Rebuild the GTM playbook around the Project Manager — not the HSE Manager</div>
+          <div class="ask-body">The Construct champion is the Project Manager and Site Foreman — not the HSE Manager who traditionally buys SafetyCulture. This is a fundamentally different buyer: they care about drawings, schedules, and crew visibility — not audit templates. Every outreach sequence, discovery script, demo flow, and onboarding journey needs to be rebuilt for this persona before M1 trial launch. Sales and CS need updated playbooks, and AEs need to understand the new objection set (competing with Procore, Aconex, and Buildxact — not Intelex or Cority).</div>
+        </div>
+      </div>
+
+      <div class="ask-item">
+        <div class="ask-num">5</div>
+        <div>
+          <div class="ask-title">Commit dedicated engineering capacity for 6 months</div>
+          <div class="ask-body">The weekly-release plan is executable — but only with dedicated engineers who are not context-switching between Construct and base SC product work. The 13 core components plus AI Schedule Intelligence and Mobile Field Experience require a committed squad. We need headcount named and locked before the first sprint begins. If engineers are shared with other roadmap items, the November v1.0 GA date moves — and so does the M2 commercial opportunity that depends on it.</div>
+        </div>
+      </div>
+
     </div>
 
     <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border-dark);flex-wrap:wrap;gap:16px;">
