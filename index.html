@@ -3,27 +3,44 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SafetyCulture Construct — Construction Vertical Hub</title>
+<title>Mitti Construction — SafetyCulture Construct</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
 <style>
   :root {
-    --bg:        #0c111d;
-    --card:      #111827;
-    --card2:     #1a2235;
-    --border:    #1f2d42;
-    --orange:    #f97316;
-    --orange-dim:#7c3a12;
-    --yellow:    #F5C518;
-    --green:     #22c55e;
-    --green-dim: #14532d;
-    --blue:      #3b82f6;
-    --blue-dim:  #1e3a5f;
-    --purple:    #a855f7;
-    --purple-dim:#3b0764;
-    --red:       #ef4444;
-    --muted:     #6b7280;
-    --text:      #e2e8f0;
-    --text-dim:  #94a3b8;
-    --font:      'Inter', system-ui, -apple-system, sans-serif;
+    /* ── DECK-MATCHED DESIGN SYSTEM (Mitti Construction) ── */
+    --bg:          #ECEDF6;   /* soft lavender page bg */
+    --bg-dark:     #263445;   /* dark slate — hero + ask sections */
+    --bg-dark2:    #313D52;   /* card bg inside dark sections */
+    --card:        #FFFFFF;   /* white cards */
+    --card2:       #F4F4FB;   /* tinted alt cards */
+    --border:      #E2E2EE;
+    --border-dark: rgba(255,255,255,0.1);
+    --shadow:      0 1px 3px rgba(0,0,0,0.05), 0 4px 20px rgba(0,0,0,0.07);
+
+    /* Accents */
+    --purple:      #6366F1;   /* primary — section numbers, key callouts */
+    --purple-dim:  rgba(99,102,241,0.10);
+    --cyan:        #06B6D4;   /* secondary — section pill borders + dots */
+    --cyan-dim:    rgba(6,182,212,0.10);
+    --yellow:      #F5C518;   /* highlight — A$24.2M, v1.0, ask items */
+    --yellow-dim:  rgba(245,197,24,0.12);
+    --orange:      #f97316;   /* SC product brand — used in app mockups */
+    --orange-dim:  rgba(249,115,22,0.10);
+    --green:       #22c55e;
+    --green-dim:   rgba(34,197,94,0.10);
+    --blue:        #3b82f6;
+    --blue-dim:    rgba(59,130,246,0.10);
+    --red:         #ef4444;
+
+    /* Text */
+    --text:        #0F172A;   /* near-black */
+    --text-dim:    #64748B;   /* grey body */
+    --muted:       #94A3B8;   /* light grey captions */
+    --text-inv:    #FFFFFF;   /* text on dark bg */
+    --text-inv-dim:rgba(255,255,255,0.6);
+
+    --font: 'Inter', system-ui, -apple-system, sans-serif;
   }
 
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -39,16 +56,17 @@
 
   /* HEADER */
   .header {
-    background: var(--card);
+    background: #fff;
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
+    padding: 0 28px;
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 14px;
     height: 56px;
     position: sticky;
     top: 0;
     z-index: 100;
+    box-shadow: 0 1px 0 var(--border);
   }
   .logo-sc {
     background: var(--orange);
@@ -60,14 +78,15 @@
     letter-spacing: 0.5px;
   }
   .construct-badge {
-    background: linear-gradient(135deg, var(--orange), #ea580c);
-    color: #fff;
+    background: var(--purple-dim);
+    color: var(--purple);
+    border: 1px solid rgba(99,102,241,0.25);
     font-size: 11px;
     font-weight: 700;
-    padding: 2px 9px;
+    padding: 2px 10px;
     border-radius: 12px;
     text-transform: uppercase;
-    letter-spacing: 0.3px;
+    letter-spacing: 0.4px;
   }
   .header-title {
     font-size: 13px;
@@ -75,31 +94,35 @@
     flex: 1;
   }
   .demo-btn {
-    background: var(--orange);
+    background: var(--purple);
     color: #fff;
     border: none;
-    padding: 8px 16px;
-    border-radius: 6px;
+    padding: 8px 18px;
+    border-radius: 8px;
     font-size: 13px;
-    font-weight: 600;
+    font-weight: 700;
     cursor: pointer;
     text-decoration: none;
     display: inline-flex;
     align-items: center;
     gap: 6px;
-    transition: background 0.15s;
+    transition: background 0.15s, box-shadow 0.15s;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(99,102,241,0.25);
   }
-  .demo-btn:hover { background: #ea580c; }
+  .demo-btn:hover { background: #4F46E5; box-shadow: 0 4px 16px rgba(99,102,241,0.35); }
 
   /* TABS */
   .tabs-bar {
-    background: var(--card);
+    background: #fff;
     border-bottom: 1px solid var(--border);
-    padding: 0 24px;
+    padding: 0 28px;
     display: flex;
     gap: 2px;
     overflow-x: auto;
+    position: sticky;
+    top: 56px;
+    z-index: 99;
   }
   .tab {
     padding: 13px 18px;
@@ -112,28 +135,40 @@
     white-space: nowrap;
   }
   .tab:hover { color: var(--text); }
-  .tab.active { color: var(--orange); border-bottom-color: var(--orange); }
+  .tab.active { color: var(--purple); border-bottom-color: var(--purple); font-weight: 600; }
 
   /* PANELS */
-  .panel { display: none; padding: 28px 24px; max-width: 1200px; margin: 0 auto; }
+  .panel { display: none; padding: 32px 28px 0; max-width: 1200px; margin: 0 auto; }
   .panel.active { display: block; }
 
+  /* SECTION PILLS (matching deck's "01 · Strategy" labels) */
+  .pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    border: 1.5px solid var(--cyan); border-radius: 20px;
+    padding: 5px 14px; font-size: 12px; font-weight: 600;
+    color: var(--text); background: transparent; margin-bottom: 14px;
+  }
+  .pill-dot { width: 8px; height: 8px; border-radius: 50%; background: var(--cyan); flex-shrink: 0; }
+  .pill-dark { border-color: var(--cyan); color: #fff; }
+  .pill-dark .pill-dot { background: var(--cyan); }
+
   .section-header { margin-bottom: 24px; }
-  .section-header h1 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
-  .section-header p { color: var(--text-dim); font-size: 14px; max-width: 700px; line-height: 1.6; }
+  .section-header h1 { font-size: 32px; font-weight: 800; color: var(--text); margin-bottom: 8px; letter-spacing: -0.5px; line-height: 1.1; }
+  .section-header p { color: var(--text-dim); font-size: 15px; max-width: 640px; line-height: 1.65; }
 
   /* STAT GRID */
   .stat-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
-    gap: 12px;
+    gap: 14px;
     margin-bottom: 24px;
   }
   .stat-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 14px;
+    padding: 20px 22px;
+    box-shadow: var(--shadow);
   }
   .stat-card .label {
     font-size: 11px;
@@ -141,13 +176,14 @@
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--muted);
-    margin-bottom: 8px;
+    margin-bottom: 10px;
   }
   .stat-card .value {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 30px;
+    font-weight: 900;
     line-height: 1;
-    margin-bottom: 4px;
+    margin-bottom: 5px;
+    letter-spacing: -1px;
   }
   .stat-card .sub { font-size: 12px; color: var(--text-dim); }
   .val-orange { color: var(--orange); }
@@ -160,15 +196,16 @@
   .card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px 22px;
+    border-radius: 14px;
+    padding: 22px 24px;
     margin-bottom: 16px;
+    box-shadow: var(--shadow);
   }
   .card h3 {
-    font-size: 14px;
-    font-weight: 600;
+    font-size: 16px;
+    font-weight: 700;
     color: var(--text);
-    margin-bottom: 14px;
+    margin-bottom: 16px;
     display: flex;
     align-items: center;
     gap: 8px;
@@ -177,7 +214,7 @@
   .tag {
     font-size: 10px;
     font-weight: 700;
-    padding: 2px 7px;
+    padding: 2px 8px;
     border-radius: 10px;
     text-transform: uppercase;
     letter-spacing: 0.4px;
@@ -185,8 +222,9 @@
   .tag-orange { background: var(--orange-dim); color: var(--orange); }
   .tag-green  { background: var(--green-dim);  color: var(--green); }
   .tag-blue   { background: var(--blue-dim);   color: var(--blue); }
-  .tag-yellow { background: #3d2e00; color: var(--yellow); }
-  .tag-muted  { background: #1f2937; color: var(--muted); }
+  .tag-yellow { background: var(--yellow-dim); color: #92750A; }
+  .tag-muted  { background: var(--card2); color: var(--muted); }
+  .tag-purple { background: var(--purple-dim); color: var(--purple); }
 
   /* GRIDS */
   .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
@@ -198,15 +236,15 @@
   .data-table th {
     text-align: left;
     font-size: 11px;
-    font-weight: 600;
+    font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.5px;
     color: var(--muted);
-    padding: 8px 10px 8px 0;
+    padding: 10px 12px 10px 0;
     border-bottom: 1px solid var(--border);
   }
   .data-table td {
-    padding: 10px 10px 10px 0;
+    padding: 12px 12px 12px 0;
     border-bottom: 1px solid var(--border);
     color: var(--text);
     vertical-align: middle;
@@ -216,34 +254,32 @@
     font-weight: 700;
     border-top: 2px solid var(--border);
     border-bottom: none;
+    background: var(--card2);
   }
+  .data-table .highlight-row td { background: rgba(99,102,241,0.04); }
+  .data-table .arr-highlight { color: var(--purple); font-weight: 700; }
 
   /* MOTION CARDS */
   .motion-card {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 20px;
-  }
-  .motion-num {
-    font-size: 11px;
-    font-weight: 700;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--orange);
-    margin-bottom: 6px;
-  }
-  .motion-card h4 { font-size: 15px; font-weight: 700; margin-bottom: 10px; }
-  .motion-card p { font-size: 13px; color: var(--text-dim); line-height: 1.6; margin-bottom: 14px; }
-  .motion-kpis { display: flex; gap: 10px; flex-wrap: wrap; }
-  .mkpi {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 8px;
-    padding: 10px 14px;
-    min-width: 80px;
+    border-radius: 14px;
+    padding: 24px;
+    box-shadow: var(--shadow);
   }
-  .mkpi .mv { font-size: 18px; font-weight: 700; color: var(--orange); line-height: 1; margin-bottom: 3px; }
+  .motion-num {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--purple-dim); color: var(--purple);
+    font-size: 10px; font-weight: 700;
+    text-transform: uppercase; letter-spacing: 0.5px;
+    padding: 3px 10px; border-radius: 20px;
+    margin-bottom: 14px;
+  }
+  .motion-card h4 { font-size: 18px; font-weight: 800; margin-bottom: 10px; color: var(--text); letter-spacing: -0.3px; }
+  .motion-card p { font-size: 14px; color: var(--text-dim); line-height: 1.65; margin-bottom: 20px; }
+  .motion-kpis { display: flex; gap: 10px; flex-wrap: wrap; padding-top: 16px; border-top: 1px solid var(--border); }
+  .mkpi { flex: 1; min-width: 72px; }
+  .mkpi .mv { font-size: 22px; font-weight: 900; color: var(--purple); line-height: 1; margin-bottom: 4px; letter-spacing: -0.5px; }
   .mkpi .ml { font-size: 11px; color: var(--muted); }
 
   /* TIMELINE */
@@ -255,7 +291,7 @@
     width: 2px;
     background: var(--border);
   }
-  .tl-item { position: relative; margin-bottom: 24px; }
+  .tl-item { position: relative; margin-bottom: 28px; }
   .tl-dot {
     position: absolute;
     left: -22px; top: 4px;
@@ -264,13 +300,13 @@
     border: 2px solid var(--muted);
     background: var(--card);
   }
-  .tl-dot.now   { background: var(--orange); border-color: var(--orange); box-shadow: 0 0 8px rgba(249,115,22,0.5); }
-  .tl-dot.next  { background: var(--blue); border-color: var(--blue); }
+  .tl-dot.now   { background: var(--purple); border-color: var(--purple); box-shadow: 0 0 8px rgba(99,102,241,0.4); }
+  .tl-dot.next  { background: var(--cyan); border-color: var(--cyan); }
   .tl-dot.later { background: var(--card2); border-color: var(--border); }
-  .tl-quarter { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange); margin-bottom: 3px; }
+  .tl-quarter { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--purple); margin-bottom: 3px; }
   .tl-quarter.blue { color: var(--blue); }
   .tl-quarter.muted { color: var(--muted); }
-  .tl-title { font-size: 15px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+  .tl-title { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
   .tl-desc { font-size: 13px; color: var(--text-dim); line-height: 1.6; margin-bottom: 10px; }
   .chips { display: flex; flex-wrap: wrap; gap: 6px; }
   .chip {
@@ -279,29 +315,30 @@
     border-radius: 20px;
     padding: 3px 10px;
     font-size: 11px;
-    color: var(--text-dim);
+    color: var(--muted);
   }
-  .chip.now { border-color: var(--orange-dim); color: var(--orange); background: var(--orange-dim); }
-  .chip.next { border-color: var(--blue-dim); color: var(--blue); background: var(--blue-dim); }
+  .chip.now { border-color: rgba(99,102,241,0.3); color: var(--purple); background: var(--purple-dim); }
+  .chip.next { border-color: rgba(6,182,212,0.3); color: var(--cyan); background: var(--cyan-dim); }
 
   /* PHASE CARD */
   .phase-card {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 18px 20px;
+    border-radius: 14px;
+    padding: 20px 22px;
     margin-bottom: 14px;
+    box-shadow: var(--shadow);
   }
   .phase-header { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; flex-wrap: wrap; }
   .phase-badge {
     font-size: 10px; font-weight: 800;
-    padding: 3px 8px; border-radius: 4px;
+    padding: 3px 10px; border-radius: 20px;
     text-transform: uppercase; letter-spacing: 0.5px;
   }
   .phase-badge.p1 { background: var(--orange-dim); color: var(--orange); }
   .phase-badge.p2 { background: var(--blue-dim);   color: var(--blue); }
-  .phase-badge.p3 { background: #3b0764; color: var(--purple); }
-  .phase-card h4 { font-size: 14px; font-weight: 700; flex: 1; }
+  .phase-badge.p3 { background: var(--purple-dim); color: var(--purple); }
+  .phase-card h4 { font-size: 15px; font-weight: 700; flex: 1; color: var(--text); }
   .phase-count { font-size: 12px; color: var(--muted); }
   .feature-list { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-top: 4px; }
   @media (max-width: 700px) { .feature-list { grid-template-columns: 1fr; } }
@@ -316,92 +353,28 @@
   }
   .fi-num.p1 { background: var(--orange-dim); color: var(--orange); }
   .fi-num.p2 { background: var(--blue-dim); color: var(--blue); }
-  .fi-num.p3 { background: #3b0764; color: var(--purple); }
+  .fi-num.p3 { background: var(--purple-dim); color: var(--purple); }
 
   /* CALLOUT */
   .callout {
-    border-radius: 8px;
-    padding: 12px 16px;
+    border-radius: 10px;
+    padding: 14px 18px;
     font-size: 13px;
     margin-bottom: 16px;
     display: flex;
-    gap: 10px;
+    gap: 12px;
     align-items: flex-start;
     border: 1px solid;
   }
-  .callout.blue   { background: var(--blue-dim); border-color: var(--blue); }
-  .callout.orange { background: var(--orange-dim); border-color: var(--orange); }
-  .callout.green  { background: var(--green-dim); border-color: var(--green); }
+  .callout.blue   { background: var(--blue-dim); border-color: rgba(59,130,246,0.3); }
+  .callout.orange { background: var(--orange-dim); border-color: rgba(249,115,22,0.3); }
+  .callout.green  { background: var(--green-dim); border-color: rgba(34,197,94,0.3); }
+  .callout.purple { background: var(--purple-dim); border-color: rgba(99,102,241,0.3); }
   .callout-icon { font-size: 15px; flex-shrink: 0; margin-top: 1px; }
   .callout p { color: var(--text-dim); margin: 0; }
   .callout strong { color: var(--text); }
 
-  /* PROTOTYPE PREVIEW */
-  .proto-wrap {
-    background: var(--card2);
-    border: 1px solid var(--border);
-    border-radius: 10px;
-    overflow: hidden;
-    margin-bottom: 16px;
-  }
-  .proto-bar {
-    background: #090e18;
-    border-bottom: 1px solid var(--border);
-    padding: 8px 14px;
-    display: flex;
-    align-items: center;
-    gap: 6px;
-  }
-  .proto-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .proto-url {
-    flex: 1;
-    background: var(--card);
-    border-radius: 5px;
-    padding: 4px 12px;
-    font-size: 11px;
-    color: var(--muted);
-    font-family: monospace;
-    text-align: center;
-  }
-  .proto-open {
-    background: var(--orange);
-    color: #fff;
-    border: none;
-    padding: 4px 12px;
-    border-radius: 5px;
-    font-size: 11px;
-    font-weight: 600;
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 4px;
-  }
-  .proto-open:hover { background: #ea580c; }
-  .proto-screens {
-    padding: 16px;
-    display: grid;
-    grid-template-columns: 1fr 1fr 1fr;
-    gap: 12px;
-  }
-  @media (max-width: 900px) { .proto-screens { grid-template-columns: 1fr; } }
-  .proto-screen {
-    background: #0a0f1a;
-    border: 1px solid var(--border);
-    border-radius: 8px;
-    overflow: hidden;
-  }
-  .ps-header {
-    background: #111827;
-    border-bottom: 1px solid var(--border);
-    padding: 8px 12px;
-    font-size: 11px;
-    font-weight: 600;
-    color: var(--text-dim);
-  }
-  .ps-body { padding: 12px; }
-
-  /* Mock UI elements */
+  /* Mock UI elements (legacy — kept for backward compat) */
   .m-proj {
     background: var(--card);
     border: 1px solid var(--border);
@@ -424,7 +397,7 @@
   .m-dr-title { flex: 1; }
   .m-badge { font-size: 9px; padding: 1px 5px; border-radius: 3px; font-weight: 600; white-space: nowrap; }
   .mb-cur { background: var(--green-dim); color: var(--green); }
-  .mb-rev { background: #3d2e00; color: var(--yellow); }
+  .mb-rev { background: rgba(245,197,24,0.1); color: #92750A; }
   .m-gantt { margin-top: 4px; }
   .m-grow { display: flex; align-items: center; gap: 6px; padding: 4px 0; border-bottom: 1px solid var(--border); }
   .m-grow:last-child { border-bottom: none; }
@@ -440,12 +413,13 @@
   .update-block {
     background: var(--card);
     border: 1px solid var(--border);
-    border-left: 3px solid var(--orange);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-left: 3px solid var(--purple);
+    border-radius: 12px;
+    padding: 18px 20px;
     margin-bottom: 14px;
+    box-shadow: var(--shadow);
   }
-  .ub-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--orange); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
+  .ub-label { font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--purple); margin-bottom: 8px; display: flex; justify-content: space-between; align-items: center; }
   .ub-date { font-weight: 400; color: var(--muted); font-size: 11px; text-transform: none; letter-spacing: 0; }
   .ub-body { font-size: 13px; color: var(--text-dim); line-height: 1.7; }
 
@@ -453,31 +427,136 @@
   .signal {
     background: var(--card);
     border: 1px solid var(--border);
-    border-radius: 10px;
-    padding: 16px 18px;
+    border-radius: 14px;
+    padding: 18px 20px;
     margin-bottom: 12px;
     display: flex;
     gap: 14px;
     align-items: flex-start;
+    box-shadow: var(--shadow);
   }
   .sig-icon {
-    width: 36px; height: 36px; border-radius: 8px;
+    width: 38px; height: 38px; border-radius: 10px;
     display: flex; align-items: center; justify-content: center;
-    font-size: 16px; flex-shrink: 0;
+    font-size: 18px; flex-shrink: 0;
   }
   .sig-icon.orange { background: var(--orange-dim); }
   .sig-icon.green  { background: var(--green-dim); }
   .sig-icon.blue   { background: var(--blue-dim); }
-  .sig-icon.purple { background: #3b0764; }
-  .sig-body h4 { font-size: 14px; font-weight: 600; color: var(--text); margin-bottom: 5px; }
+  .sig-icon.purple { background: var(--purple-dim); }
+  .sig-body h4 { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 5px; }
   .sig-body p { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
 
+  /* WHY-IT-WINS CARDS (deck slide 6) */
+  .why-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 16px; margin-bottom: 32px; }
+  @media (max-width: 800px) { .why-grid { grid-template-columns: 1fr; } }
+  .why-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 28px 24px;
+    box-shadow: var(--shadow);
+  }
+  .why-icon { font-size: 26px; margin-bottom: 14px; }
+  .why-tag { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.5px; color: var(--muted); margin-bottom: 8px; }
+  .why-title { font-size: 18px; font-weight: 800; color: var(--text); margin-bottom: 6px; letter-spacing: -0.3px; }
+  .why-subtitle { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 10px; }
+  .why-body { font-size: 13px; color: var(--text-dim); line-height: 1.65; }
+
+  /* VERTICALS LIST (deck slide 2) */
+  .vertical-list { display: flex; flex-direction: column; gap: 8px; }
+  .vertical-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 14px 18px;
+    display: flex; align-items: center; gap: 12px;
+    font-size: 14px; font-weight: 600; color: var(--text-dim);
+    box-shadow: var(--shadow);
+  }
+  .vertical-item.active {
+    background: #0F172A; color: #fff;
+    border-color: #0F172A;
+  }
+  .vertical-item.active .vi-name { color: #fff; font-size: 16px; }
+  .vertical-item.active .vi-sub { color: rgba(255,255,255,0.55); }
+  .vi-icon {
+    width: 36px; height: 36px; border-radius: 10px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px; flex-shrink: 0;
+  }
+  .vi-icon.active { background: var(--purple); }
+  .vi-icon.muted  { background: var(--card2); }
+  .vi-name { font-size: 14px; font-weight: 700; flex: 1; }
+  .vi-sub  { font-size: 11px; color: var(--muted); margin-top: 1px; }
+  .live-badge {
+    background: var(--yellow); color: #000;
+    font-size: 10px; font-weight: 800;
+    padding: 2px 8px; border-radius: 9px;
+    letter-spacing: 0.3px;
+  }
+
+  /* DARK SECTIONS (hero + The Ask — matching deck cover/slide 8) */
+  .dark-section {
+    background: var(--bg-dark);
+    color: var(--text-inv);
+    padding: 64px 28px;
+    position: relative;
+    overflow: hidden;
+  }
+  .dark-section-inner { max-width: 1200px; margin: 0 auto; position: relative; }
+  .ask-items { display: flex; flex-direction: column; gap: 14px; margin: 28px 0 40px; }
+  .ask-item {
+    background: var(--bg-dark2);
+    border: 1px solid var(--border-dark);
+    border-radius: 14px;
+    padding: 20px 24px;
+    display: flex; align-items: flex-start; gap: 20px;
+  }
+  .ask-num { font-size: 24px; font-weight: 900; color: var(--yellow); flex-shrink: 0; line-height: 1; width: 28px; }
+  .ask-title { font-size: 15px; font-weight: 700; color: #fff; margin-bottom: 6px; }
+  .ask-body { font-size: 13px; color: var(--text-inv-dim); line-height: 1.6; }
+
+  /* VISUAL TIMELINE (deck slide 7) */
+  .tl-visual-wrap { position: relative; margin: 36px 0 24px; }
+  .tl-visual-line {
+    height: 4px;
+    background: linear-gradient(90deg, var(--purple) 0%, var(--cyan) 50%, var(--yellow) 100%);
+    border-radius: 2px; margin-bottom: 0;
+  }
+  .tl-visual-dots { display: flex; justify-content: space-between; margin-top: -8px; padding: 0 0; }
+  .tl-vdot {
+    width: 16px; height: 16px; border-radius: 50%;
+    border: 3px solid #fff;
+    box-shadow: 0 0 0 2px;
+  }
+  .tl-vdot.purple { background: var(--purple); box-shadow: 0 0 0 2px var(--purple); }
+  .tl-vdot.cyan   { background: var(--cyan);   box-shadow: 0 0 0 2px var(--cyan); }
+  .tl-vdot.yellow { background: var(--yellow);  box-shadow: 0 0 0 2px var(--yellow); }
+  .tl-cards { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; margin-top: 20px; }
+  @media (max-width: 800px) { .tl-cards { grid-template-columns: 1fr; } }
+  .tl-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 22px 20px;
+    box-shadow: var(--shadow);
+  }
+  .tl-v { font-size: 20px; font-weight: 900; margin-bottom: 4px; letter-spacing: -0.5px; }
+  .tl-v.purple { color: var(--purple); }
+  .tl-v.cyan   { color: var(--cyan); }
+  .tl-v.yellow { color: var(--yellow); }
+  .tl-date { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 8px; }
+  .tl-name { font-size: 15px; font-weight: 800; color: var(--text); margin-bottom: 8px; }
+  .tl-body { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+
+  /* FOOTER */
   .footnote { font-size: 11px; color: var(--muted); margin-top: 8px; }
-  .divider { border: none; border-top: 1px solid var(--border); margin: 20px 0; }
-  .spacer { height: 48px; }
-  a { color: var(--orange); text-decoration: none; }
+  .divider { border: none; border-top: 1px solid var(--border); margin: 24px 0; }
+  .spacer { height: 56px; }
+  a { color: var(--purple); text-decoration: none; }
   a:hover { text-decoration: underline; }
-  code { background: var(--card2); padding: 2px 6px; border-radius: 3px; font-size: 11px; font-family: monospace; }
+  code { background: var(--card2); padding: 2px 6px; border-radius: 4px; font-size: 11px; font-family: monospace; color: var(--purple); border: 1px solid var(--border); }
 
   /* ── PLATFORM TAB — COMPONENT MOCKUPS ── */
   .comp-section { margin-bottom: 32px; }
@@ -493,20 +572,21 @@
 
   /* Browser chrome wrapper */
   .browser-wrap {
-    background: #060b14;
-    border: 1px solid var(--border);
-    border-radius: 10px;
+    background: #F1F3F5;
+    border: 1px solid #DDE1E7;
+    border-radius: 12px;
     overflow: hidden;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
   }
   .browser-chrome {
-    background: #0d1424;
-    border-bottom: 1px solid var(--border);
+    background: #F1F3F5;
+    border-bottom: 1px solid #DDE1E7;
     padding: 8px 14px;
     display: flex; align-items: center; gap: 8px;
   }
   .bc-dot { width: 10px; height: 10px; border-radius: 50%; }
   .bc-url {
-    flex: 1; background: #111827; border-radius: 5px;
+    flex: 1; background: #FFFFFF; border-radius: 5px; border: 1px solid #E2E2EE;
     padding: 4px 14px; font-size: 11px; color: var(--muted);
     font-family: monospace; text-align: center;
   }
@@ -915,84 +995,46 @@
 <!-- HEADER -->
 <header class="header">
   <span class="logo-sc">SC</span>
-  <span style="color:var(--muted); font-weight:300;">/</span>
   <span class="construct-badge">Construct</span>
-  <span class="header-title">Construction Vertical — Internal Hub</span>
-  <span style="font-size:12px; color:var(--muted);" data-update-section="last-updated">Updated May 2026</span>
-  <a href="https://sc-construction.up.railway.app/" target="_blank" class="demo-btn">▶ Open Live Demo</a>
+  <span class="header-title">Mitti Construction — Internal Hub</span>
+  <span style="font-size:12px; color:var(--muted);" data-update-section="last-updated">Updated Jun 2026</span>
+  <a href="https://sc-construction.up.railway.app/" target="_blank" class="demo-btn">▶ View Prototype</a>
 </header>
 
-<!-- HERO -->
-<div style="
-  background: linear-gradient(180deg, #080d18 0%, #0c111d 100%);
-  border-bottom: 1px solid var(--border);
-  padding: 56px 40px 52px;
-  position: relative;
-  overflow: hidden;
-">
-  <!-- Background glow -->
-  <div style="
-    position:absolute; inset:0; pointer-events:none;
-    background: radial-gradient(ellipse 70% 120% at 50% 0%, rgba(249,115,22,0.10) 0%, transparent 70%);
-  "></div>
-  <!-- Grid texture -->
-  <div style="
-    position:absolute; inset:0; pointer-events:none;
-    background-image: linear-gradient(rgba(255,255,255,0.015) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.015) 1px, transparent 1px);
-    background-size: 48px 48px;
-    mask-image: radial-gradient(ellipse 90% 100% at 50% 0%, black 30%, transparent 100%);
-  "></div>
-
-  <div style="max-width:1100px; margin:0 auto; position:relative;">
-
-    <!-- Eyebrow -->
-    <div style="font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:2px; color:var(--orange); margin-bottom:20px; display:flex; align-items:center; gap:10px;">
-      <span style="width:28px; height:1px; background:var(--orange); opacity:0.5; display:inline-block;"></span>
-      SafetyCulture Construct · Construction Vertical
-      <span style="width:28px; height:1px; background:var(--orange); opacity:0.5; display:inline-block;"></span>
-    </div>
-
-    <!-- Headline -->
-    <h1 style="font-size:clamp(36px,5.5vw,72px); font-weight:900; letter-spacing:-2px; line-height:1.0; color:#fff; margin-bottom:20px;">
-      A horizontal platform<br>
-      <span style="color:var(--orange);">got us here.</span><br>
-      <span style="color:rgba(255,255,255,0.35);">Going vertical</span> takes us further.
-    </h1>
-
-    <!-- Sub -->
-    <p style="font-size:17px; color:var(--text-dim); max-width:580px; line-height:1.7; margin-bottom:36px;">
-      Construction is where SafetyCulture already leads — <strong style="color:var(--text);">4,379 customers, A$25M ARR</strong>, and zero construction-specific product. Construct changes that. First vertical. Six months. <strong style="color:var(--text);">Let's build it.</strong>
-    </p>
-
-    <!-- Actions + proof -->
-    <div style="display:flex; align-items:center; gap:28px; flex-wrap:wrap;">
-      <a href="https://sc-construction.up.railway.app/" target="_blank" style="
-        background:var(--orange); color:#fff;
-        padding:11px 22px; border-radius:8px;
-        font-size:14px; font-weight:700;
-        text-decoration:none; display:inline-flex; align-items:center; gap:7px;
-        box-shadow: 0 0 32px rgba(249,115,22,0.3);
-        transition: background 0.15s;
-      ">▶ View Live Prototype</a>
-
-      <div style="width:1px; height:36px; background:var(--border);"></div>
-
-      <div style="display:flex; gap:28px; flex-wrap:wrap;">
-        <div>
-          <div style="font-size:22px; font-weight:800; color:var(--orange); letter-spacing:-0.5px; line-height:1;">A$24.2M</div>
-          <div style="font-size:11px; color:var(--muted); margin-top:2px;">add-on potential · 5% pen.</div>
-        </div>
-        <div>
-          <div style="font-size:22px; font-weight:800; color:#fff; letter-spacing:-0.5px; line-height:1;">6 months</div>
-          <div style="font-size:11px; color:var(--muted); margin-top:2px;">Jun → Nov 2026 · GA</div>
-        </div>
-        <div>
-          <div style="font-size:22px; font-weight:800; color:var(--green); letter-spacing:-0.5px; line-height:1;">Weekly</div>
-          <div style="font-size:11px; color:var(--muted); margin-top:2px;">release cadence</div>
-        </div>
+<!-- HERO — matches deck slide 1: dark slate, massive title, tri-bar -->
+<div class="dark-section" style="padding: 72px 28px 64px;">
+  <div class="dark-section-inner" style="display:grid; grid-template-columns:1fr auto; gap:40px; align-items:end; flex-wrap:wrap;">
+    <div>
+      <div class="pill pill-dark" style="margin-bottom:28px;">
+        <span class="pill-dot"></span>Construction Vertical
       </div>
+      <h1 style="font-size:clamp(52px,8vw,96px); font-weight:900; letter-spacing:-3px; line-height:0.95; color:#fff; margin-bottom:28px;">
+        Mitti<br>Construction
+      </h1>
+      <p style="font-size:18px; color:var(--text-inv-dim); max-width:520px; line-height:1.6; margin-bottom:36px;">
+        Powerfully simple, generative frontline data capture for construction.
+      </p>
+      <div style="display:flex; gap:14px; flex-wrap:wrap; margin-bottom:48px;">
+        <a href="https://sc-construction.up.railway.app/" target="_blank" style="
+          background:var(--purple); color:#fff; padding:12px 24px; border-radius:9px;
+          font-size:14px; font-weight:700; text-decoration:none;
+          display:inline-flex; align-items:center; gap:8px;
+          box-shadow: 0 4px 16px rgba(99,102,241,0.4);
+        ">▶ View Live Prototype</a>
+        <span style="display:inline-flex;align-items:center;gap:16px;font-size:14px;color:var(--text-inv-dim);">
+          <span><strong style="color:#fff;font-size:18px;font-weight:800;">4,379</strong><br><span style="font-size:11px;">customers</span></span>
+          <span style="width:1px;height:32px;background:var(--border-dark);"></span>
+          <span><strong style="color:#fff;font-size:18px;font-weight:800;">A$25.1M</strong><br><span style="font-size:11px;">base ARR</span></span>
+          <span style="width:1px;height:32px;background:var(--border-dark);"></span>
+          <span><strong style="color:var(--yellow);font-size:18px;font-weight:800;">A$24.2M</strong><br><span style="font-size:11px;">add-on potential</span></span>
+        </span>
+      </div>
+      <!-- Tri-color bar from deck -->
+      <div style="height:5px;width:220px;border-radius:3px;background:linear-gradient(90deg,var(--purple) 0% 33%,var(--cyan) 33% 66%,var(--yellow) 66% 100%);"></div>
     </div>
-
+    <div style="text-align:right;font-size:12px;color:var(--text-inv-dim);align-self:flex-start;">
+      SafetyCulture · Construction Vertical<br>Jun 2026
+    </div>
   </div>
 </div>
 
@@ -1010,22 +1052,71 @@
      OPPORTUNITY
 ════════════════════════════════════ -->
 <div class="panel active" id="panel-opportunity">
-  <div class="section-header">
-    <h1>Market Opportunity</h1>
-    <p>SafetyCulture already serves 4,379 construction customers globally generating A$25.1M ARR. The add-on opportunity — Projects, Plans &amp; Drawings, Schedule Intelligence — is a further <strong>A$24M</strong> from inside the existing base plus net-new ICP acquisition.</p>
+
+  <!-- 01 · STRATEGY — matching deck slide 2 -->
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start;margin-bottom:48px;padding-bottom:48px;border-bottom:1px solid var(--border);">
+    <div>
+      <div class="pill"><span class="pill-dot"></span>01 · Strategy</div>
+      <h2 style="font-size:32px;font-weight:800;color:var(--text);letter-spacing:-0.5px;line-height:1.1;margin-bottom:20px;">Why we're going vertical</h2>
+      <p style="font-size:15px;color:var(--text-dim);line-height:1.7;margin-bottom:20px;">A horizontal platform got us here. Going deep in the workflows that matter most to a single industry is what takes us further — and construction is where we already lead.</p>
+      <p style="font-size:15px;font-weight:700;color:var(--text);line-height:1.6;">Mitti is the template for how SafetyCulture goes to market next: industry-specific offerings, built on the platform we already have.</p>
+    </div>
+    <div>
+      <div class="vertical-list">
+        <div class="vertical-item active">
+          <div class="vi-icon active">🏗️</div>
+          <div style="flex:1;">
+            <div class="vi-name">Construction</div>
+            <div class="vi-sub" style="color:rgba(255,255,255,0.55);">First vertical · building now</div>
+          </div>
+          <span class="live-badge">LIVE</span>
+        </div>
+        <div class="vertical-item">
+          <div class="vi-icon muted">🏭</div>
+          <div style="flex:1;"><div class="vi-name">Manufacturing</div></div>
+        </div>
+        <div class="vertical-item">
+          <div class="vi-icon muted">🏥</div>
+          <div style="flex:1;"><div class="vi-name">Healthcare</div></div>
+        </div>
+        <div class="vertical-item">
+          <div class="vi-icon muted">🛍️</div>
+          <div style="flex:1;"><div class="vi-name">Retail &amp; hospitality</div></div>
+        </div>
+        <div class="vertical-item">
+          <div class="vi-icon muted">🚛</div>
+          <div style="flex:1;"><div class="vi-name">Transport &amp; logistics</div></div>
+        </div>
+      </div>
+      <p style="font-size:12px;color:var(--muted);margin-top:10px;text-align:center;">Future verticals follow the same playbook</p>
+    </div>
   </div>
 
-  <div class="stat-grid" data-update-section="top-stats">
-    <div class="stat-card"><div class="label">Existing Customers</div><div class="value val-orange">4,379</div><div class="sub">Global construction accounts</div></div>
-    <div class="stat-card"><div class="label">Current ARR</div><div class="value val-orange">A$25.1M</div><div class="sub">Construction base ARR</div></div>
-    <div class="stat-card" style="border-color: var(--green);"><div class="label">Add-on Potential</div><div class="value val-green">A$24.2M</div><div class="sub">M1 A$3.0M + M2 A$21.2M</div><div style="margin-top:6px;font-size:10px;background:var(--green-dim);color:var(--green);border-radius:4px;padding:2px 7px;display:inline-block;font-weight:600;">at 5% penetration · Phase 1 of plan</div></div>
-    <div class="stat-card"><div class="label">ICP in Base</div><div class="value val-blue">1,975</div><div class="sub">20–500 emp accounts</div></div>
-    <div class="stat-card"><div class="label">Card on File</div><div class="value val-yellow">1,633</div><div class="sub">Ready to trial M1</div></div>
-    <div class="stat-card"><div class="label">M1 Target</div><div class="value val-green">~494</div><div class="sub">25% conversion of card-on-file</div></div>
+  <!-- 02 · OPPORTUNITY -->
+  <div class="pill"><span class="pill-dot"></span>02 · Opportunity</div>
+  <h2 style="font-size:32px;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:24px;">The construction opportunity</h2>
+
+  <div class="stat-grid" style="grid-template-columns:1fr 1fr 1fr;" data-update-section="top-stats">
+    <div class="stat-card">
+      <div class="label">Construction customers today</div>
+      <div class="value" style="font-size:40px;font-weight:900;color:var(--text);letter-spacing:-2px;">4,379</div>
+      <div class="sub">Already on SafetyCulture, globally</div>
+    </div>
+    <div class="stat-card">
+      <div class="label">Construction base ARR</div>
+      <div class="value" style="font-size:40px;font-weight:900;color:var(--text);letter-spacing:-2px;">A$25.1M</div>
+      <div class="sub">Revenue we already earn here</div>
+    </div>
+    <div class="stat-card" style="background:#111827;border-color:#1f2937;">
+      <div class="label" style="color:rgba(255,255,255,0.45);">Add-on potential</div>
+      <div class="value" style="font-size:40px;font-weight:900;color:var(--yellow);letter-spacing:-2px;">A$24.2M</div>
+      <div class="sub" style="color:rgba(255,255,255,0.75);font-weight:600;">Add-on potential</div>
+      <div style="font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;">Phase 1, at just 5% penetration</div>
+    </div>
   </div>
 
   <div class="card" data-update-section="regional-breakdown">
-    <h3>ARR by Region <span class="tag tag-orange">Current Base + Add-on</span></h3>
+    <h3>ARR by Region <span class="tag tag-purple">Current Base + Add-on</span></h3>
     <table class="data-table">
       <thead>
         <tr>
@@ -1041,28 +1132,28 @@
           <td><strong>ANZ</strong></td>
           <td>~1,382</td>
           <td>A$6.3M</td>
-          <td><strong style="color:var(--orange)">A$1.8M</strong></td>
-          <td style="color:var(--text-dim)">M1 upgrade (card on file)</td>
+          <td class="arr-highlight">A$1.8M</td>
+          <td style="color:var(--text-dim)">In-base upgrade</td>
         </tr>
-        <tr>
+        <tr class="highlight-row">
           <td><strong>AMER</strong></td>
           <td>~1,224</td>
           <td>A$9.1M</td>
-          <td><strong style="color:var(--orange)">A$15.4M</strong></td>
-          <td style="color:var(--text-dim)">M2 net-new dominant</td>
+          <td class="arr-highlight">A$15.4M <span style="font-size:10px;background:var(--purple-dim);color:var(--purple);padding:1px 5px;border-radius:4px;">largest</span></td>
+          <td style="color:var(--text-dim)">Net-new ICP</td>
         </tr>
         <tr>
           <td><strong>EU+UK</strong></td>
           <td>~1,772</td>
           <td>A$9.7M</td>
-          <td><strong style="color:var(--orange)">A$7.0M</strong></td>
-          <td style="color:var(--text-dim)">M1 + M2 mixed</td>
+          <td class="arr-highlight">A$7.0M</td>
+          <td style="color:var(--text-dim)">Mixed</td>
         </tr>
         <tr class="total-row">
           <td>Global</td>
           <td>4,379</td>
           <td>A$25.1M</td>
-          <td><strong style="color:var(--green)">A$24.2M</strong></td>
+          <td><strong>A$24.2M</strong></td>
           <td style="color:var(--text-dim)">—</td>
         </tr>
       </tbody>
@@ -1070,49 +1161,47 @@
     <p class="footnote">AMER dominates add-on potential despite fewer accounts — driven by higher avg MRR/seat and larger net-new ICP pool (~110K businesses).</p>
   </div>
 
-  <h3 style="font-size:15px; font-weight:600; margin-bottom:4px;">Go-To-Market Plan</h3>
-  <p style="font-size:13px;color:var(--text-dim);margin-bottom:16px;line-height:1.5;">Three phases of increasing ambition. We're executing Phase 1 now.</p>
+  <div class="pill" style="margin-top:32px;"><span class="pill-dot"></span>03 · Go-to-market</div>
+  <h2 style="font-size:32px;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:20px;">Two motions to revenue</h2>
 
-  <!-- Phase timeline strip -->
-  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:1px;background:var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px;">
-    <div style="background:var(--card);padding:14px 18px;">
-      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--orange);margin-bottom:4px;">Phase 1 — Near Term · Active Now</div>
+  <!-- Phase strip -->
+  <div style="display:grid;grid-template-columns:2fr 1fr 1fr;gap:2px;margin-bottom:24px;">
+    <div style="background:var(--card);border:1px solid var(--border);border-left:4px solid var(--purple);border-radius:12px;padding:16px 20px;box-shadow:var(--shadow);">
+      <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--purple);margin-bottom:4px;">Phase 1 — Near Term · Active Now</div>
       <div style="font-size:14px;font-weight:700;color:var(--text);margin-bottom:6px;">In-base activation + ICP acquisition</div>
-      <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">Motion 1 (upgrade existing ICP with card on file) + Motion 2 (net-new ICP acquisition via construction-first pitch). Target: A$24.2M add-on ARR at 5% penetration.</div>
+      <div style="font-size:12px;color:var(--text-dim);line-height:1.6;">Motion 1 + Motion 2 · Target: <strong style="color:var(--purple);">A$24.2M add-on ARR</strong> at 5% penetration.</div>
     </div>
-    <div style="background:var(--card2);padding:14px 18px;">
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px 20px;">
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:4px;">Phase 2 — Mid Term · TBD</div>
       <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:6px;">Deepen &amp; expand</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.6;">To be defined. Likely includes deeper enterprise motion, channel partnerships, and penetration beyond 5%.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;">To be defined. Deeper enterprise motion, partnerships, beyond 5%.</div>
     </div>
-    <div style="background:var(--card2);padding:14px 18px;">
+    <div style="background:var(--card2);border:1px solid var(--border);border-radius:12px;padding:16px 20px;">
       <div style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:4px;">Phase 3 — Long Term · TBD</div>
       <div style="font-size:14px;font-weight:700;color:var(--muted);margin-bottom:6px;">Category leadership</div>
-      <div style="font-size:12px;color:var(--muted);line-height:1.6;">To be defined. Full vision requires more thinking — will be shaped by what we learn in Phase 1 &amp; 2.</div>
+      <div style="font-size:12px;color:var(--muted);line-height:1.6;">To be defined — shaped by what we learn in Phase 1 &amp; 2.</div>
     </div>
   </div>
-
-  <h4 style="font-size:13px;font-weight:700;color:var(--orange);text-transform:uppercase;letter-spacing:0.5px;margin-bottom:12px;">Phase 1 — Two Revenue Motions</h4>
   <div class="two-col">
     <div class="motion-card">
-      <div class="motion-num">Motion 1 — Upgrade</div>
-      <h4>In-App Free Trial → Paid Conversion</h4>
-      <p>1,633 ICP accounts already have a credit card on file. Construct modules surface as a free trial inside the existing SC product — fully self-serve. No new sales motion, no outbound needed.</p>
+      <div class="motion-num">MOTION 1 · UPGRADE</div>
+      <h4>In-app free trial, fully self-serve</h4>
+      <p>1,633 ICP accounts already have a card on file. Construct surfaces as a trial inside the product they already use — no outbound needed.</p>
       <div class="motion-kpis">
         <div class="mkpi"><div class="mv">1,633</div><div class="ml">Card on file</div></div>
-        <div class="mkpi"><div class="mv">25%</div><div class="ml">Target conv.</div></div>
-        <div class="mkpi"><div class="mv">~494</div><div class="ml">Target accts</div></div>
+        <div class="mkpi"><div class="mv">25%</div><div class="ml">Target conversion</div></div>
+        <div class="mkpi"><div class="mv">~494</div><div class="ml">Accounts</div></div>
         <div class="mkpi"><div class="mv">A$3.0M</div><div class="ml">Add-on ARR</div></div>
       </div>
     </div>
     <div class="motion-card">
-      <div class="motion-num">Motion 2 — Net-New</div>
-      <h4>ICP Acquisition via Construction-First Pitch</h4>
-      <p>Target 20–500 employee construction companies not yet on SC. Construct modules are the primary hook — safety compliance is the door-opener, Projects is the differentiator that closes.</p>
+      <div class="motion-num">MOTION 2 · NET-NEW</div>
+      <h4>ICP acquisition, construction-first</h4>
+      <p>Target 20–500 employee builders not yet on SC. Safety opens the door; Projects, Plans &amp; Drawings is the differentiator that closes.</p>
       <div class="motion-kpis">
         <div class="mkpi"><div class="mv">~160K</div><div class="ml">Global ICP</div></div>
-        <div class="mkpi"><div class="mv">5%</div><div class="ml">Target pen.</div></div>
-        <div class="mkpi"><div class="mv">20 seats</div><div class="ml">Avg deal</div></div>
+        <div class="mkpi"><div class="mv">5%</div><div class="ml">Target penetration</div></div>
+        <div class="mkpi"><div class="mv">~20</div><div class="ml">Seats / deal</div></div>
         <div class="mkpi"><div class="mv">A$21.2M</div><div class="ml">Add-on ARR</div></div>
       </div>
     </div>
@@ -1179,12 +1268,13 @@
      PLATFORM
 ════════════════════════════════════ -->
 <div class="panel" id="panel-platform">
+  <div class="pill"><span class="pill-dot"></span>04 · Product</div>
   <div class="section-header">
-    <h1>Platform — What We're Building</h1>
-    <p>SafetyCulture Construct is a construction-specific overlay on the SC platform. All 13 components are shown below as they appear in the live prototype. Switch to "Construct" mode in the prototype to see the full experience.</p>
+    <h1>SafetyCulture Construct</h1>
+    <p>A construction-specific layer on the SC platform — projects, drawings and schedules wired into the inspections and actions teams already run.</p>
   </div>
 
-  <div class="callout orange" style="margin-bottom:24px;align-items:center;">
+  <div class="callout purple" style="margin-bottom:24px;align-items:center;">
     <div class="callout-icon">▶</div>
     <div style="flex:1;">
       <strong>Interactive prototype live</strong> — click the "Construct" toggle (top-left) once it opens to switch into Construct mode and explore every screen below.
@@ -2096,17 +2186,52 @@
      ROADMAP
 ════════════════════════════════════ -->
 <div class="panel" id="panel-roadmap">
+  <div class="pill"><span class="pill-dot"></span>06 · Delivery</div>
   <div class="section-header">
-    <h1>Build Roadmap</h1>
-    <p>Weekly release cadence. Full platform delivered within <strong>6 months</strong> — Jun through Nov 2026. Each release ships a usable increment; milestones mark customer-ready checkpoints.</p>
+    <h1>Live in six months</h1>
+    <p>Weekly release cadence. Full platform shipped Jun → Nov 2026. Every Friday is a release. Three milestones, one goal.</p>
+  </div>
+
+  <!-- Visual timeline matching deck slide 7 -->
+  <div class="tl-visual-wrap">
+    <div style="display:flex;justify-content:space-between;margin-bottom:8px;font-size:11px;color:var(--muted);font-weight:600;">
+      <span>Jun</span><span>Jul</span><span>Aug</span><span>Sep</span><span>Oct</span><span>Nov 2026</span>
+    </div>
+    <div class="tl-visual-line"></div>
+    <div class="tl-visual-dots" style="padding:0 0;">
+      <div class="tl-vdot purple"></div>
+      <div style="flex:1;"></div>
+      <div class="tl-vdot cyan" style="margin-left:-8px;position:relative;left:33%;"></div>
+      <div style="flex:1;"></div>
+      <div class="tl-vdot yellow"></div>
+    </div>
+  </div>
+  <div class="tl-cards" style="margin-bottom:32px;">
+    <div class="tl-card">
+      <div class="tl-v purple">v0.1</div>
+      <div class="tl-date">11 Jul 2026</div>
+      <div class="tl-name">Foundation</div>
+      <div class="tl-body">All 7 critical components — projects, hub, project-scoped registers. Internal pilot begins.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-v cyan">v0.2</div>
+      <div class="tl-date">12 Sep 2026</div>
+      <div class="tl-name">Core construction</div>
+      <div class="tl-body">Documents, Plans &amp; Drawings, Programme Gantt and AI Schedule Intelligence. Wider pilot.</div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-v yellow">v1.0</div>
+      <div class="tl-date">28 Nov 2026</div>
+      <div class="tl-name">Full platform · GA</div>
+      <div class="tl-body">Mobile drawings, crew management, Workers Passport preview. Ready for commercial launch.</div>
+    </div>
   </div>
 
   <!-- Summary stats -->
-  <div class="stat-grid" style="margin-bottom:24px;">
-    <div class="stat-card"><div class="label">Timeline</div><div class="value val-orange">6 months</div><div class="sub">Jun → Nov 2026</div></div>
-    <div class="stat-card"><div class="label">Release Cadence</div><div class="value val-green">Weekly</div><div class="sub">Ship every Friday</div></div>
-    <div class="stat-card"><div class="label">Total Components</div><div class="value val-blue">16</div><div class="sub">13 original + 3 added</div></div>
-    <div class="stat-card"><div class="label">Milestones</div><div class="value val-yellow">3</div><div class="sub">v0.1 · v0.2 · v1.0</div></div>
+  <div class="stat-grid" style="margin-bottom:24px;grid-template-columns:repeat(3,1fr);">
+    <div class="stat-card"><div class="label">Timeline</div><div class="value" style="font-size:32px;font-weight:900;color:var(--text);letter-spacing:-1px;">6 months</div><div class="sub">Jun → Nov 2026</div></div>
+    <div class="stat-card"><div class="label">Release cadence</div><div class="value" style="font-size:32px;font-weight:900;color:var(--text);letter-spacing:-1px;">Weekly</div><div class="sub">Ship every Friday</div></div>
+    <div class="stat-card"><div class="label">Components shipped</div><div class="value" style="font-size:32px;font-weight:900;color:var(--text);letter-spacing:-1px;">16</div><div class="sub">13 original + 3 added to scope</div></div>
   </div>
 
   <!-- Weekly release table -->
@@ -2351,6 +2476,7 @@
      PROGRESS
 ════════════════════════════════════ -->
 <div class="panel" id="panel-progress">
+  <div class="pill"><span class="pill-dot"></span>Progress</div>
   <div class="section-header">
     <h1>Progress</h1>
     <p>Weekly status across Engineering, GTM, Customer Success, and Product. Updated by Blake each week.</p>
@@ -2396,8 +2522,37 @@
      SIGNALS
 ════════════════════════════════════ -->
 <div class="panel" id="panel-signals">
-  <div class="section-header">
-    <h1>Signals &amp; ICP Intelligence</h1>
+
+  <!-- 05 · WHY IT WINS — matching deck slide 6 -->
+  <div class="pill"><span class="pill-dot"></span>05 · Why it wins</div>
+  <h2 style="font-size:32px;font-weight:800;color:var(--text);letter-spacing:-0.5px;margin-bottom:24px;">Why construction teams switch</h2>
+
+  <div class="why-grid">
+    <div class="why-card">
+      <div class="why-icon">📐</div>
+      <div class="why-tag">#1 request</div>
+      <div class="why-title">#1 request</div>
+      <div class="why-subtitle">Plans &amp; Drawings closes the gap</div>
+      <div class="why-body">The most-cited reason teams run a separate tool. A revision-tracked register with markup-to-action replaces the email chains and Bluebeam workflows they pay for today.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">👷</div>
+      <div class="why-tag">New champion</div>
+      <div class="why-title">New champion</div>
+      <div class="why-subtitle">From HSE Manager to PM + Foreman</div>
+      <div class="why-body">Construct shifts the buyer to the Project Manager and Site Foreman. That reshapes the outreach script, the demo flow, and the onboarding playbook.</div>
+    </div>
+    <div class="why-card">
+      <div class="why-icon">📊</div>
+      <div class="why-tag">Exec hook</div>
+      <div class="why-title">Exec hook</div>
+      <div class="why-subtitle">Schedule visibility wins sign-off</div>
+      <div class="why-body">PMs live in the day-to-day tools, but the Programme Gantt and Org Hierarchy — seeing every project's risk in one view — are what get directors to sign.</div>
+    </div>
+  </div>
+
+  <div class="section-header" style="margin-top:16px;">
+    <h1 style="font-size:22px;">Signals &amp; ICP Intelligence</h1>
     <p>What the data tells us about who buys, what they need, and what the Construct go-to-market should prioritise.</p>
   </div>
 
@@ -2481,6 +2636,47 @@
     });
   });
 </script>
+
+<!-- ═══ THE ASK — matching deck slide 8 (dark section, always visible) ═══ -->
+<div class="dark-section" style="margin-top:0;">
+  <div class="dark-section-inner">
+    <div class="pill pill-dark" style="margin-bottom:20px;">
+      <span class="pill-dot"></span>07 · The ask
+    </div>
+    <h2 style="font-size:clamp(28px,4vw,44px);font-weight:800;color:#fff;letter-spacing:-0.5px;margin-bottom:4px;">What we need to go big</h2>
+
+    <div class="ask-items">
+      <div class="ask-item">
+        <div class="ask-num">1</div>
+        <div>
+          <div class="ask-title">Back the vertical strategy</div>
+          <div class="ask-body">Treat Mitti as the template for industry-specific go-to-market — the first of several verticals built on the platform we already have.</div>
+        </div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-num">2</div>
+        <div>
+          <div class="ask-title">Unblock the architecture decision</div>
+          <div class="ask-body">Lock the project-to-group/site mapping in the next two weeks. It determines every API call — nothing ships until it's resolved.</div>
+        </div>
+      </div>
+      <div class="ask-item">
+        <div class="ask-num">3</div>
+        <div>
+          <div class="ask-title">Line up pilot customers and GTM</div>
+          <div class="ask-body">Confirm pilot accounts and align sales on the in-app trial motion, so the 1,633 card-on-file accounts convert from day one.</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;justify-content:space-between;padding-top:20px;border-top:1px solid var(--border-dark);flex-wrap:wrap;gap:16px;">
+      <div style="font-size:18px;font-weight:900;color:#fff;letter-spacing:-0.5px;">
+        <span style="color:var(--orange);">Safety</span><span style="color:#fff;text-decoration:underline;text-decoration-color:var(--cyan);">Culture</span>
+      </div>
+      <div style="font-size:22px;font-weight:800;color:var(--cyan);letter-spacing:-0.3px;">Let's build it.</div>
+    </div>
+  </div>
+</div>
 
 </body>
 </html>
