@@ -1314,63 +1314,6 @@
     <a href="https://blakewyer-dev.github.io/sc-construction-prototype" target="_blank" style="background:var(--orange);color:#fff;border:none;padding:9px 18px;border-radius:7px;font-size:13px;font-weight:700;text-decoration:none;white-space:nowrap;display:inline-flex;align-items:center;gap:7px;flex-shrink:0;margin-left:12px;">▶ View Live Prototype</a>
   </div>
 
-  <!-- ─── DELIVERY PHASES ─── -->
-  <h3 style="font-size:15px;font-weight:600;margin-bottom:14px;">Delivery Phases — 13 Components</h3>
-
-  <div class="phase-card">
-    <div class="phase-header">
-      <div class="phase-badge p1">P1 Critical</div>
-      <h4>Foundation — Project Structure &amp; Core SC Module Scoping</h4>
-      <div class="phase-count">7 components</div>
-    </div>
-    <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">The architectural backbone. Establishes the project container, permissions model, context bar, and scopes all core SC modules to a project. Nothing else can be built without these.</div>
-    <div class="feature-list">
-      <div class="fi"><div class="fi-num p1">1</div><div>Project Module Overview Page — grid/hierarchy view of all projects, stat strip, contract value, status filter</div></div>
-      <div class="fi"><div class="fi-num p1">2</div><div>Project Creation &amp; Setup — create form, team assignment, SC group/site mapping, status lifecycle</div></div>
-      <div class="fi"><div class="fi-num p1">3</div><div>Project Home Screen (Hub) — persistent context bar, project switcher, tab navigation strip</div></div>
-      <div class="fi"><div class="fi-num p1">4</div><div>Overview Tab — KPI stat cards, Today on Site panel, Recent Activity feed, quick action shortcuts</div></div>
-      <div class="fi"><div class="fi-num p1">5</div><div>Inspections Tab — project-scoped inspection register, pass rate stat strip, overdue highlighting</div></div>
-      <div class="fi"><div class="fi-num p1">6</div><div>Actions Tab — project-scoped action register, priority/status indicators, overdue count</div></div>
-      <div class="fi"><div class="fi-num p1">7</div><div>Issues Tab — project-scoped issue register, severity colour coding (Critical/High/Medium/Low)</div></div>
-    </div>
-    <div class="callout orange" style="margin-top:14px;margin-bottom:0;">
-      <div class="callout-icon">⚠️</div>
-      <div><strong>Blocking decision:</strong> Project-to-Group/Site mapping must be locked before Phase 1 begins — it determines every API call in the module. Options: (a) 1 Project = 1 SC Site, (b) Project owns Sites, (c) Project is a Group. Engineering to confirm before any P1 code is written.</div>
-    </div>
-  </div>
-
-  <div class="phase-card">
-    <div class="phase-header">
-      <div class="phase-badge p2">P2 High</div>
-      <h4>Core Construction — Plans &amp; Drawings, Programme Gantt, Org Hierarchy</h4>
-      <div class="phase-count">5 components</div>
-    </div>
-    <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">The features that differentiate SafetyCulture Construct from base SC. Plans &amp; Drawings and Programme Gantt are the two most-requested capabilities from construction customers.</div>
-    <div class="feature-list">
-      <div class="fi"><div class="fi-num p2">8</div><div>Documents Tab — construction-categorised document management: SWMS, ITP, Plans, Contracts, Certs</div></div>
-      <div class="fi"><div class="fi-num p2">9</div><div>Plans &amp; Drawings Register — drawing number, discipline (A/S/C/M/E), revision, status, markup count badges</div></div>
-      <div class="fi"><div class="fi-num p2">10</div><div>Drawing Viewer &amp; Markup Tools — PDF viewer, annotations, raise SC action/issue directly from a markup pin</div></div>
-      <div class="fi"><div class="fi-num p2">11</div><div>Programme / Schedule Gantt — phase-based Gantt, critical path, hold points linked to SC inspections, At Risk flags, weather overlays</div></div>
-      <div class="fi"><div class="fi-num p2">12</div><div>Org Hierarchy View — visual org tree (Company → Region → Project) for portfolio-level leadership visibility</div></div>
-    </div>
-  </div>
-
-  <div class="phase-card">
-    <div class="phase-header">
-      <div class="phase-badge p3">P3 Medium</div>
-      <h4>Advanced — Crew &amp; Contractor Management</h4>
-      <div class="phase-count">1 component</div>
-    </div>
-    <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">Extends the module with live crew visibility, induction tracking, cert expiry alerts, and subcontractor management. Depends on Phase 1 and 2 being fully stable.</div>
-    <div class="feature-list">
-      <div class="fi"><div class="fi-num p3">13</div><div>People &amp; Crew Management — live crew roster, induction status, certification expiry alerts, contractor company tracking</div></div>
-    </div>
-  </div>
-
-  <div class="callout blue">
-    <div class="callout-icon">📋</div>
-    <div><strong>Next phase (after v1.0):</strong> Workers Passport (cross-site identity &amp; compliance record for workers across multiple contractors), Permits to Work, and Schedule Change Management are scoped for the phase following full platform delivery.</div>
-  </div>
   <!-- ─── MODULE WALKTHROUGHS ─── -->
   <h3 style="font-size:15px;font-weight:600;margin-bottom:16px;">Module Walkthroughs</h3>
 
@@ -1960,3 +1903,61 @@
 
 </body>
 </html>
+
+  <!-- ─── DELIVERY PHASES ─── -->
+  <h3 style="font-size:15px;font-weight:600;margin-bottom:14px;">Delivery Phases — 13 Components</h3>
+
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-badge p1">P1 Critical</div>
+      <h4>Foundation — Project Structure &amp; Core SC Module Scoping</h4>
+      <div class="phase-count">7 components</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">The architectural backbone. Establishes the project container, permissions model, context bar, and scopes all core SC modules to a project. Nothing else can be built without these.</div>
+    <div class="feature-list">
+      <div class="fi"><div class="fi-num p1">1</div><div>Project Module Overview Page — grid/hierarchy view of all projects, stat strip, contract value, status filter</div></div>
+      <div class="fi"><div class="fi-num p1">2</div><div>Project Creation &amp; Setup — create form, team assignment, SC group/site mapping, status lifecycle</div></div>
+      <div class="fi"><div class="fi-num p1">3</div><div>Project Home Screen (Hub) — persistent context bar, project switcher, tab navigation strip</div></div>
+      <div class="fi"><div class="fi-num p1">4</div><div>Overview Tab — KPI stat cards, Today on Site panel, Recent Activity feed, quick action shortcuts</div></div>
+      <div class="fi"><div class="fi-num p1">5</div><div>Inspections Tab — project-scoped inspection register, pass rate stat strip, overdue highlighting</div></div>
+      <div class="fi"><div class="fi-num p1">6</div><div>Actions Tab — project-scoped action register, priority/status indicators, overdue count</div></div>
+      <div class="fi"><div class="fi-num p1">7</div><div>Issues Tab — project-scoped issue register, severity colour coding (Critical/High/Medium/Low)</div></div>
+    </div>
+    <div class="callout orange" style="margin-top:14px;margin-bottom:0;">
+      <div class="callout-icon">⚠️</div>
+      <div><strong>Blocking decision:</strong> Project-to-Group/Site mapping must be locked before Phase 1 begins — it determines every API call in the module. Options: (a) 1 Project = 1 SC Site, (b) Project owns Sites, (c) Project is a Group. Engineering to confirm before any P1 code is written.</div>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-badge p2">P2 High</div>
+      <h4>Core Construction — Plans &amp; Drawings, Programme Gantt, Org Hierarchy</h4>
+      <div class="phase-count">5 components</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">The features that differentiate SafetyCulture Construct from base SC. Plans &amp; Drawings and Programme Gantt are the two most-requested capabilities from construction customers.</div>
+    <div class="feature-list">
+      <div class="fi"><div class="fi-num p2">8</div><div>Documents Tab — construction-categorised document management: SWMS, ITP, Plans, Contracts, Certs</div></div>
+      <div class="fi"><div class="fi-num p2">9</div><div>Plans &amp; Drawings Register — drawing number, discipline (A/S/C/M/E), revision, status, markup count badges</div></div>
+      <div class="fi"><div class="fi-num p2">10</div><div>Drawing Viewer &amp; Markup Tools — PDF viewer, annotations, raise SC action/issue directly from a markup pin</div></div>
+      <div class="fi"><div class="fi-num p2">11</div><div>Programme / Schedule Gantt — phase-based Gantt, critical path, hold points linked to SC inspections, At Risk flags, weather overlays</div></div>
+      <div class="fi"><div class="fi-num p2">12</div><div>Org Hierarchy View — visual org tree (Company → Region → Project) for portfolio-level leadership visibility</div></div>
+    </div>
+  </div>
+
+  <div class="phase-card">
+    <div class="phase-header">
+      <div class="phase-badge p3">P3 Medium</div>
+      <h4>Advanced — Crew &amp; Contractor Management</h4>
+      <div class="phase-count">1 component</div>
+    </div>
+    <div style="font-size:13px;color:var(--text-dim);margin-bottom:12px;line-height:1.6;">Extends the module with live crew visibility, induction tracking, cert expiry alerts, and subcontractor management. Depends on Phase 1 and 2 being fully stable.</div>
+    <div class="feature-list">
+      <div class="fi"><div class="fi-num p3">13</div><div>People &amp; Crew Management — live crew roster, induction status, certification expiry alerts, contractor company tracking</div></div>
+    </div>
+  </div>
+
+  <div class="callout blue">
+    <div class="callout-icon">📋</div>
+    <div><strong>Next phase (after v1.0):</strong> Workers Passport (cross-site identity &amp; compliance record for workers across multiple contractors), Permits to Work, and Schedule Change Management are scoped for the phase following full platform delivery.</div>
+  </div>
